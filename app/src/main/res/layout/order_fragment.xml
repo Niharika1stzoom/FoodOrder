@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:id="@+id/view_empty"
+        layout="@layout/view_empty"/>
+
+    <ScrollView
+        android:id="@+id/orderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false">
+    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".order.OrderFragment">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/order_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/order_title"
+        android:paddingEnd="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:textColor="@color/item_color_title"
+        android:textSize="@dimen/font_medium"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Your Order" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@+id/order_title"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/total_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        android:background="@android:color/white"
+        android:elevation="@dimen/card_view_elevation"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        app:cardBackgroundColor="@color/primaryLightColor"
+        app:cardCornerRadius="@dimen/card_view_corner_radius"
+        app:cardElevation="@dimen/card_view_elevation">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/grand_total_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_gravity="left"
+            android:text="@string/grand_total_label"
+           android:padding="@dimen/margin_large"
+            android:textColor="@color/item_color_title"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold"
+            tools:text="Grand Total" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/grand_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin"
+            android:textSize="@dimen/font_medium"
+            android:layout_gravity="right"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/dummy_value"
+            android:paddingEnd="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:textColor="@color/item_color_title"
+            android:textStyle="bold"
+            tools:text="Rs 800" />
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_button"
+        android:layout_margin="@dimen/margin_large"
+        style="?attr/materialButtonOutlinedStyle"
+        app:layout_constraintTop_toBottomOf="@id/total_container"
+        app:layout_constraintRight_toLeftOf="@+id/place_order"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/place_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/place_order"
+        android:layout_margin="@dimen/margin_large"
+
+        app:layout_constraintTop_toBottomOf="@id/total_container"
+        app:layout_constraintLeft_toRightOf="@+id/cancel_button"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/success_msg"
+        android:layout_width="match_parent"
+        android:background="@color/green"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_large"
+        android:layout_margin="@dimen/margin_large"
+        android:textSize="@dimen/font_medium"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/total_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/success_msg"
+        android:textColor="@color/item_color_like"
+        android:textStyle="bold"
+        tools:text="Your order has been places " />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/buttons_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="cancel_button,place_order"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

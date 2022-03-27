@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Food Express</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="scan_msg">Scan QR code on your Table</string>
+    <string name="network_err">Please check your network connection</string>
+    <string name="empty_text">No dishes found</string>
+    <string name="add_button">ADD</string>
+    <string name="view_order">View Order</string>
+    <string name="place_order">PLACE ORDER</string>
+    <string name="cancel_button">CANCEL</string>
+    <string name="order_title">Your Order</string>
+    <string name="grand_total_label">Grand Total</string>
+    <string name="dummy_value">Rs 2500</string>
+    <string name="table_num">"Table num : "</string>
+    <string name="alert_dialog_cancel_title">CANCEL?</string>
+    <string name="alert_cancel_confirm_msg">Are you sure yor want to cancel this order?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="alert_dialog_order_title">Place Order</string>
+    <string name="alert_order_confirm_msg">Place this order with the Restaurant</string>
+    <string name="order_success_msg">Your order has been placed.</string>
+    <string name="alert_dialog_add_title">No Items</string>
+    <string name="alert_no_items_msg">Please add items in your order</string>
+    <string name="ok">OK</string>
+    <string name="success_msg">Your Order will be delivered to your table soon.\n Enjoy your meal!</string>
+
+</resources>

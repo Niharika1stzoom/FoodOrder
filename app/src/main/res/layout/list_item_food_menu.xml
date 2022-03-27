@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@android:color/white"
+    android:elevation="@dimen/card_view_elevation"
+    android:padding="@dimen/padding"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardElevation="@dimen/card_view_elevation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/menu_item_view">
+
+        <ImageView
+            android:id="@+id/item_profile_img"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/ic_placeholder"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginVertical="@dimen/margin"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/item_color_title"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/item_profile_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="Paneer Tikka" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:fontFamily="@font/gt_medium"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/margin_xsmall"
+            android:textColor="@color/item_color_forks"
+            android:textSize="@dimen/font_medium"
+            app:fontFamily="@font/montserrat"
+            app:layout_constraintLeft_toLeftOf="@id/item_name"
+            app:layout_constraintRight_toRightOf="@id/item_name"
+            app:layout_constraintTop_toBottomOf="@id/item_name"
+            tools:text="Rs 500" />
+
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:ellipsize="end"
+            android:fontFamily="@font/gt_medium"
+            android:lineSpacingExtra="2dp"
+            android:textAlignment="center"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="@color/item_color_desc"
+            android:textSize="@dimen/font_xmedium"
+
+            app:layout_constraintTop_toBottomOf="@id/item_price"
+            tools:text="Marinated in Red sauce"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/qty_button_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="add_qty,rem_qty,qty_label"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_button"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:padding="7dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_desc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <ImageButton
+            android:id="@+id/rem_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_minus"
+            android:background="@drawable/round_button"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/qty_label"
+            app:layout_constraintTop_toBottomOf="@id/item_desc"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/qty_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/margin_small_medium"
+            android:paddingLeft="@dimen/margin_small_medium"
+            android:paddingEnd="@dimen/margin_small_medium"
+            android:paddingRight="@dimen/margin_small_medium"
+            android:textColor="@color/item_color_like"
+            android:textSize="@dimen/font_large"
+            app:layout_constraintLeft_toRightOf="@+id/rem_qty"
+            app:layout_constraintTop_toBottomOf="@+id/item_desc"
+            app:layout_constraintStart_toStartOf="@id/item_desc"
+            app:layout_constraintEnd_toEndOf="@id/item_desc"
+            tools:text="1"/>
+
+        <ImageButton
+            android:id="@+id/add_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_add"
+            android:background="@drawable/round_button"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_desc"
+            app:layout_constraintLeft_toRightOf="@id/qty_label"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_xsmall"
+            android:elevation="@dimen/card_image_view_elevation"
+            android:shadowColor="@color/item_color_shadow"
+            android:shadowRadius="10"
+            android:src="@drawable/ic_reply_24dp"
+            app:elevation="@dimen/card_image_view_elevation"
+            app:fabSize="mini"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_desc" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
