@@ -5,6 +5,7 @@ public class Restaurant {
     String phoneNum;
     String name;
 
+
     public Restaurant(String tableNum, String phoneNum, String name) {
         this.tableNum = tableNum;
         this.phoneNum = phoneNum;

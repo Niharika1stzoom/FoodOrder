@@ -9,4 +9,6 @@ public interface AppConstants {
     public static final String RESTAURANT_NAME="HARD ROCK CAFE";
     public static final String RESTAURANT_NUM="7600722180";
 
+    String KEY_ORDER_ID ="order_id" ;
+    String KEY_RESTAURANT_NAME = "restaurant_name";
 }

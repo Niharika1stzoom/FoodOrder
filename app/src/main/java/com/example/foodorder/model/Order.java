@@ -1,26 +1,49 @@
 package com.example.foodorder.model;
 
-import java.util.HashMap;
+import com.google.gson.annotations.SerializedName;
 
-public class Order {
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+public class Order implements Serializable {
+    private UUID id;
+
+    public Date getTime() {
+        return time;
+    }
+
+    //private Customer customer;
+    //int redeem_points;
+    //boolean status
+    Date time;
 
     private Restaurant restaurant;
-    private HashMap<String,MenuItem> foodItems;
+    @SerializedName("array")
+    public List<MenuItem> foodItemsList;
 
+    private HashMap<String,MenuItem> foodItems;
     public Boolean getOrderExecuted() {
         return orderExecuted;
     }
-
     public void setOrderExecuted(Boolean orderExecuted) {
         this.orderExecuted = orderExecuted;
     }
 
     private Boolean orderExecuted=false;
     public Order(Restaurant restaurant) {
+        id=UUID.randomUUID();
         foodItems=new HashMap<>();
         this.restaurant = restaurant;
-    }
 
+    }
+public void setTime()
+{
+    time= Calendar.getInstance().getTime();
+}
     public Restaurant getRestaurant() {
         return restaurant;
     }
@@ -36,7 +59,18 @@ public class Order {
         item.setQty(1);
         return foodItems.put(item.getId(),item);
     }
-    public void incrementQty(String id)
+    public Double getTotalPrice(){
+        Double total=0.0;
+
+        for(MenuItem item:foodItemsList)
+        {
+            total+=item.getQty()*item.getPrice();
+        }
+        return total;
+
+    }
+    public void incrementQty
+            (String id)
     {
         int Qty=getMenuItem(id).getQty();
         getMenuItem(id).setQty(++Qty);
@@ -64,6 +98,18 @@ public class Order {
             return true;
         else
             return false;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public List<MenuItem> getItemsList() {
+        return foodItemsList;
     }
 }
 

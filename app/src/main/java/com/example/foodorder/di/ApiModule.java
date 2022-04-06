@@ -1,7 +1,11 @@
 package com.example.foodorder.di;
 
 import com.example.foodorder.foodmenu.FoodMenuRepository;
+import com.example.foodorder.model.Review;
 import com.example.foodorder.network.RestaurantApi;
+import com.example.foodorder.order.OrderRepository;
+import com.example.foodorder.review.ReviewRepository;
+import com.example.foodorder.review.ReviewSingleton;
 
 import javax.inject.Singleton;
 
@@ -32,7 +36,21 @@ public class ApiModule {
     }
     @Singleton
     @Provides
-    FoodMenuRepository provideRepository(RestaurantApi apiInterface){
+    public ReviewSingleton getReviewInstance() {
+        return ReviewSingleton.getReview();
+    }
+
+    @Singleton
+    @Provides
+    FoodMenuRepository provideMenuRepository(RestaurantApi apiInterface){
         return new FoodMenuRepository(apiInterface);
+    }
+    @Provides
+    OrderRepository provideOrderRepository(RestaurantApi apiInterface){
+        return new OrderRepository(apiInterface);
+    }
+    @Provides
+    ReviewRepository provideRepository(RestaurantApi apiInterface,ReviewSingleton reviewSingleton){
+        return new ReviewRepository(apiInterface,reviewSingleton);
     }
 }

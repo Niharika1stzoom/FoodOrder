@@ -96,7 +96,9 @@ public class SharedPrefUtils {
 
     synchronized public static void setOrderExecuted(Context context) {
         Order order=getOrder(context);
+        order.setTime();
         order.setOrderExecuted(true);
         SharedPrefUtils.setOrder(context,order);
     }
+
 }

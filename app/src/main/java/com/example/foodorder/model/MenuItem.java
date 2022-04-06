@@ -1,9 +1,17 @@
 package com.example.foodorder.model;
 
-public class MenuItem {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
     private String id;
     private String name;
     private String imageUrl;
+    private String description;
+    private Double price;
+    @SerializedName("qty")
+    private int Qty;
 
     public MenuItem(String id, String name, String imageUrl, String description, Double price) {
         this.id = id;
@@ -12,11 +20,6 @@ public class MenuItem {
         this.description = description;
         this.price = price;;
     }
-
-    private String description;
-    private Double price;
-    private int Qty;
-
     public void setQty(int qty) {
         Qty = qty;
     }

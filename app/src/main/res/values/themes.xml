@@ -20,6 +20,20 @@
     </style>
     <style name="Theme.FoodOrder.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.FoodOrder.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="smallRatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+    </style>
+    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar" >
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">1.0</item>
+        <item name="android:scaleX">0.6</item>
+        <item name="android:scaleY">0.6</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
         <item name="cornerSize">50%</item>

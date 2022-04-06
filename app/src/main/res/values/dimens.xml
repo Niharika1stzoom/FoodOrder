@@ -33,11 +33,11 @@
 
 
     <dimen name="margin_xsmall">3dp</dimen>
-    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_small_medium">8dp</dimen>
     <dimen name="margin">10dp</dimen>
     <dimen name="margin_large">15dp</dimen>
-    <dimen name="margin_medium">13dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_xlarge">20dp</dimen>
     <dimen name="margin_xxlarge">22dp</dimen>
     <dimen name="margin_xx_medium_large">24dp</dimen>
@@ -85,5 +85,6 @@
 
     <dimen name="constraint_height">60dp</dimen>
     <dimen name="button_round_radius">5</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

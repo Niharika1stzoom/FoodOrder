@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/scanFragment">
 
-
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.foodorder.scan.ScanFragment"
@@ -21,5 +20,15 @@
     android:name="com.example.foodorder.order.OrderFragment"
     android:label="Order_fragment"
     tools:layout="@layout/order_fragment" />
+    <fragment
+        android:id="@+id/addReviewFragment"
+        android:name="com.example.foodorder.review.AddReviewFragment"
+        android:label="Rate your Order"
+        tools:layout="@layout/add_review_fragment" />
+    <fragment
+        android:id="@+id/addReviewMenuItemFragment"
+        android:name="com.example.foodorder.review.AddReviewMenuItemFragment"
+        android:label="fragment_add_review_menu_item"
+        tools:layout="@layout/fragment_add_review_menu_item" />
 
 </navigation>

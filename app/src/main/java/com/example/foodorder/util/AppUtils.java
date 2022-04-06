@@ -4,15 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodorder.R;
 import com.example.foodorder.model.MenuItem;
+import com.example.foodorder.model.Order;
 import com.google.android.material.snackbar.Snackbar;
 
 public class AppUtils {
+
+
     public static void setImage(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
@@ -20,6 +24,8 @@ public class AppUtils {
                 .centerCrop()
                 .into(imageView);
     }
+
+
     public static void shareFoodMenu(Context context, MenuItem foodMenu) {
         String foodDesc=foodMenu.getDescription();
         if(foodDesc==null)
