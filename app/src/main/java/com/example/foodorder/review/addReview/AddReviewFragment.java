@@ -1,4 +1,4 @@
-package com.example.foodorder.review;
+package com.example.foodorder.review.addReview;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -7,26 +7,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.example.foodorder.R;
 import com.example.foodorder.databinding.AddReviewFragmentBinding;
-import com.example.foodorder.foodmenu.FoodMenuAdapter;
-import com.example.foodorder.model.MenuItemReview;
 import com.example.foodorder.model.Order;
-import com.example.foodorder.util.AppUtils;
+import com.example.foodorder.model.Restaurant;
 import com.example.foodorder.util.OrderUtils;
+import com.example.foodorder.util.RestaurantUtils;
 
 import java.util.UUID;
 
@@ -85,6 +82,7 @@ public class AddReviewFragment extends Fragment {
             if(!TextUtils.isEmpty(reviewText))
             mViewModel.setRestaurantReviewText(reviewText);
             mViewModel.submitReview();
+            viewReview(order.getRestaurant());
         }
         );
         mBinding.ratingBarRestaurant.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -95,6 +93,12 @@ public class AddReviewFragment extends Fragment {
         });
 
         //init listener for restaurant rating bar
+    }
+
+    private void viewReview(Restaurant restaurant) {
+        RestaurantUtils.getRestaurantBundle(restaurant);
+        NavHostFragment.findNavController(getParentFragment()).navigate(R.id.displayReviewFragment,
+                RestaurantUtils.getRestaurantBundle(restaurant) );
     }
 
     private void initButtonListener() {
@@ -110,7 +114,6 @@ public class AddReviewFragment extends Fragment {
                 Log.d("FoodDebug","Order is not null"+order.getItemsList().size());
                 //mBinding.orderDetail.setText(order.getRestaurant().getName());
                 mViewModel.startReview(order);
-
                 mAdapter.setList(order.getItemsList());
                 initUI(order);
                 //set rest details in review

@@ -9,12 +9,17 @@ public class Customer {
     String credentials;
     int current_pts;
     int lifetime_pts;
+    String photoURL;
 
-    public Customer(String name, String emailId, String credentials) {
+    public Customer(String name, String emailId, String credentials,String photoURL) {
         id=UUID.randomUUID();
         this.name = name;
         this.emailId = emailId;
         this.credentials = credentials;
+        this.photoURL=photoURL;
+    }
+    public String getPhotoURL() {
+        return photoURL;
     }
 
     public void setCurrent_pts(int current_pts) {

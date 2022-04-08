@@ -22,13 +22,14 @@
     tools:layout="@layout/order_fragment" />
     <fragment
         android:id="@+id/addReviewFragment"
-        android:name="com.example.foodorder.review.AddReviewFragment"
+        android:name="com.example.foodorder.review.addReview.AddReviewFragment"
         android:label="Rate your Order"
         tools:layout="@layout/add_review_fragment" />
+
     <fragment
-        android:id="@+id/addReviewMenuItemFragment"
-        android:name="com.example.foodorder.review.AddReviewMenuItemFragment"
-        android:label="fragment_add_review_menu_item"
-        tools:layout="@layout/fragment_add_review_menu_item" />
+        android:id="@+id/displayReviewFragment"
+        android:name="com.example.foodorder.review.displayReview.DisplayReviewFragment"
+        android:label="Reviews"
+        tools:layout="@layout/display_review_fragment" />
 
 </navigation>

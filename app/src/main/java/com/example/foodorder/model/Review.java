@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Review {
+    Order order;
+    List<MenuItemReview> reviewItems;
+    RestaurantReview restaurantReview;
     public void setOrder(Order order) {
         this.order = order;
     }
 
-    Order order;
-    List<MenuItemReview> reviewItems;
 
     public void setRestaurantReview(RestaurantReview restaurantReview) {
         this.restaurantReview = restaurantReview;
     }
 
-    RestaurantReview restaurantReview;
     public Review()
     {
         reviewItems=new ArrayList<>();

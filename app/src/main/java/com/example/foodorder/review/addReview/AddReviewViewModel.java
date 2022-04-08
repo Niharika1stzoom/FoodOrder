@@ -1,4 +1,4 @@
-package com.example.foodorder.review;
+package com.example.foodorder.review.addReview;
 
 import android.app.Application;
 
@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.foodorder.model.Order;
 import com.example.foodorder.order.OrderRepository;
+import com.example.foodorder.review.ReviewRepository;
 
 import java.util.UUID;
 

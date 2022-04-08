@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    tools:context=".review.displayReview.DisplayReviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/restaurant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/font_large"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+                tools:text="HardRock Cafe" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/total_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_xlarge"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="8dp"
+                android:text="@string/default_rating"
+                app:layout_constraintLeft_toLeftOf="@id/restaurant_name"
+                app:layout_constraintRight_toRightOf="@id/restaurant_name"
+                app:layout_constraintTop_toBottomOf="@id/restaurant_name"
+                tools:text="4.5"/>
+
+        <RatingBar
+            android:id="@+id/ratingBarRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/total_rating"
+            app:layout_constraintLeft_toLeftOf="@id/restaurant_name"
+            app:layout_constraintRight_toRightOf="@id/restaurant_name"
+            android:isIndicator="true"
+            android:scaleX="0.6"
+            android:scaleY="0.6"/>
+
+        <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/numReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/restaurant_name"
+            app:layout_constraintRight_toRightOf="@id/restaurant_name"
+            app:layout_constraintTop_toBottomOf="@id/ratingBarRestaurant"
+            tools:text="Based on 222 reviews"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/numReviews"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

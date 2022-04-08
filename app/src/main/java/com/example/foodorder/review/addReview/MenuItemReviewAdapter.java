@@ -1,26 +1,20 @@
-package com.example.foodorder.review;
+package com.example.foodorder.review.addReview;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorder.databinding.ListItemFoodMenuBinding;
 import com.example.foodorder.databinding.ListItemMenuReviewBinding;
 import com.example.foodorder.model.MenuItem;
 import com.example.foodorder.model.MenuItemReview;
+import com.example.foodorder.review.ReviewRepository;
 import com.example.foodorder.util.AppUtils;
-import com.example.foodorder.util.SharedPrefUtils;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 
 public class MenuItemReviewAdapter extends RecyclerView.Adapter<MenuItemReviewAdapter.MenuItemReviewViewHolder> {

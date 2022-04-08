@@ -50,4 +50,8 @@ public class AppUtils {
         return isConnected;
 
     }
+
+    public static String getCustomerNickName() {
+        return "Anonymous User";
+    }
 }
