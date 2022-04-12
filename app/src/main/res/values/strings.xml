@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food Express</string>
+    <string name="app_name">Happiest Places</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -131,10 +131,16 @@
     <string name="main_notification_channel_name">review_reminder</string>
     <string name="review_reminder_notification_body">Rate your last order</string>
     <string name="notification_content_title">Rate your Order</string>
-    <string name="redeem_default_label">Sign in to get Reward Points</string>
+    <string name="redeem_default_label">Sign In now to redeem 100 points in your order</string>
     <string name="redeem_welcome_label">Unlock free dishes and special discounts.\n100 Rewards points are waiting for you.</string>
     <string name="no_reviews">No Reviews yet</string>
     <string name="default_rating">0.0</string>
     <string name="anonymous_user">Anonymous User</string>
+    <string name="wrongQR">You are scanning the wrong QR code</string>
+    <string name="wrongRest">"This Restaurant is not available "</string>
+    <string name="food_img">Food Image</string>
+    <string name="increment">Add item to your order</string>
+    <string name="share">Share</string>
+    <string name="sign_in">"You are signed in as "</string>
 
 </resources>

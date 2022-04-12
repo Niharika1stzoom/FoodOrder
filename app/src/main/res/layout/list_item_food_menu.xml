@@ -26,6 +26,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:contentDescription="@string/food_img"
             android:src="@drawable/ic_placeholder"
             />
 
@@ -57,7 +58,7 @@
             android:fontFamily="@font/gt_medium"
             android:textStyle="bold"
             android:paddingTop="@dimen/margin_xsmall"
-            android:textColor="@color/item_color_forks"
+            android:textColor="@color/brown"
             android:textSize="@dimen/font_medium"
             app:fontFamily="@font/montserrat"
             app:layout_constraintLeft_toLeftOf="@id/item_name"
@@ -75,12 +76,11 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="end"
-            android:fontFamily="@font/gt_medium"
             android:lineSpacingExtra="2dp"
             android:textAlignment="center"
             android:lines="2"
             android:maxLines="2"
-            android:textColor="@color/item_color_desc"
+            android:textColor="@color/brown"
             android:textSize="@dimen/font_xmedium"
 
             app:layout_constraintTop_toBottomOf="@id/item_price"
@@ -146,6 +146,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_add"
             android:background="@drawable/round_button"
+            android:contentDescription="@string/increment"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_small"
             android:padding="4dp"
@@ -167,6 +168,7 @@
             app:elevation="@dimen/card_image_view_elevation"
             app:fabSize="mini"
             android:visibility="gone"
+            android:contentDescription="@string/share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_desc" />

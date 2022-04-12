@@ -11,6 +11,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+        <include
+            android:id="@+id/view_loader"
+            layout="@layout/view_loader"/>
+
+       <androidx.constraintlayout.widget.Group
+        android:id="@+id/layoutGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="restaurant_container,restaurant_rate_container,postButton,how_label,recycler_view,review_text"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/restaurant_container"
@@ -37,7 +46,6 @@
                 android:id="@+id/restaurant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:ellipsize="end"
                 android:maxLength="20"
                 android:maxLines="1"
@@ -52,8 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="15dp"
-            android:clickable="true"
+            android:textSize="15sp"
             android:layout_centerVertical="true"
             tools:text="Rs 500"/>
         <com.google.android.material.textview.MaterialTextView
@@ -62,8 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/restaurant_name"
             android:layout_alignLeft="@id/restaurant_name"
-            android:clickable="true"
-            android:text="@string/dummy_date"
             tools:text="Today, 10:45"/>
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>

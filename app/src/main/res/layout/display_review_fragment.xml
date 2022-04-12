@@ -8,9 +8,19 @@
     android:fillViewport="false"
     tools:context=".review.displayReview.DisplayReviewFragment">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <include
+            android:id="@+id/view_loader"
+            layout="@layout/view_loader"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/layoutGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="restaurant_name,total_rating,recycler_view,ratingBarRestaurant,numReviews"/>
 
         <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/restaurant_name"

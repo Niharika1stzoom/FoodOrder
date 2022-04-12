@@ -7,28 +7,28 @@
 
     <fragment
         android:id="@+id/scanFragment"
-        android:name="com.example.foodorder.scan.ScanFragment"
-        android:label="Food Express"
+        android:name="com.zoom.happiestplaces.scan.ScanFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/scan_fragment" />
     <fragment
         android:id="@+id/foodMenuFragment"
-        android:name="com.example.foodorder.foodmenu.FoodMenuFragment"
-        android:label="HardRock Cafe"
+        android:name="com.zoom.happiestplaces.foodmenu.FoodMenuFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/food_menu_fragment" />
     <fragment
     android:id="@+id/orderFragment"
-    android:name="com.example.foodorder.order.OrderFragment"
-    android:label="Order_fragment"
+    android:name="com.zoom.happiestplaces.order.OrderFragment"
+    android:label="@string/app_name"
     tools:layout="@layout/order_fragment" />
     <fragment
         android:id="@+id/addReviewFragment"
-        android:name="com.example.foodorder.review.addReview.AddReviewFragment"
+        android:name="com.zoom.happiestplaces.review.addReview.AddReviewFragment"
         android:label="Rate your Order"
         tools:layout="@layout/add_review_fragment" />
 
     <fragment
         android:id="@+id/displayReviewFragment"
-        android:name="com.example.foodorder.review.displayReview.DisplayReviewFragment"
+        android:name="com.zoom.happiestplaces.review.displayReview.DisplayReviewFragment"
         android:label="Reviews"
         tools:layout="@layout/display_review_fragment" />
 
