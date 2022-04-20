@@ -3,31 +3,27 @@ package com.zoom.happiestplaces.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class MenuItem implements Serializable {
-    private String id;
+    private UUID id;
     private String name;
+    @SerializedName("image1")
     private String imageUrl;
     private String description;
     private Double price;
-    @SerializedName("qty")
-    private int Qty;
 
-    public MenuItem(String id, String name, String imageUrl, String description, Double price) {
+
+    public MenuItem(UUID id, String name, String imageUrl, String description, Double price) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;;
     }
-    public void setQty(int qty) {
-        Qty = qty;
-    }
-    public int getQty() {
-        return Qty;
-    }
 
-    public String getId() {
+
+    public UUID getId() {
         return id;
     }
 
@@ -46,6 +42,4 @@ public class MenuItem implements Serializable {
     public Double getPrice() {
         return price;
     }
-
-
 }

@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.ScanFragmentBinding;
+import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.QRUtils;
 import com.zoom.happiestplaces.util.RestaurantUtils;
@@ -49,6 +51,7 @@ import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -221,8 +224,14 @@ public class ScanFragment extends Fragment {
     }
 
     private void showRestaurantMenu(String QRcode) {
-        if (QRUtils.checkQRFormat(QRcode))
+        //TODO:if the qr code is wrong
+        Log.d(AppConstants.TAG,"Qr code "+QRcode.toString());
+        NavHostFragment.findNavController(this).navigate(R.id.foodMenuFragment,
+                RestaurantUtils.getQRBundle(QRcode)
+        );
+       /* if (QRUtils.checkQRFormat(QRcode))
         {
+
             mViewModel.getRestaurant(QRUtils.getRestaurantIdQR(QRcode)).observe(
                     this, restaurant -> {
                 if(restaurant==null) {
@@ -240,7 +249,7 @@ public class ScanFragment extends Fragment {
         else
         {
             AppUtils.showSnackbar(getView(),getString(R.string.wrongQR));
-        }
+        }*/
     }
     @Override
     public void onDestroyView() {

@@ -2,6 +2,7 @@ package com.zoom.happiestplaces.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Review {
     Order order;
@@ -33,7 +34,7 @@ public class Review {
         return restaurantReview;
     }
 
-    public void addReviewMenuItem(String menuItemId, float stars) {
+    public void addReviewMenuItem(UUID menuItemId, float stars) {
     MenuItemReview menuItemReview=getMenuItemReview(menuItemId);
     if(menuItemReview==null)
         reviewItems.add(new MenuItemReview("",stars,menuItemId));
@@ -42,7 +43,7 @@ public class Review {
     }
 
 
-    public MenuItemReview getMenuItemReview(String menuItemId) {
+    public MenuItemReview getMenuItemReview(UUID menuItemId) {
         for(MenuItemReview review:reviewItems) {
             if (review.getMenuItemId().equals(menuItemId))
                 return review;

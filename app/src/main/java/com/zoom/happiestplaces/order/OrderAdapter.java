@@ -12,11 +12,12 @@ import java.util.List;
 
 import com.zoom.happiestplaces.databinding.ListItemOrderBinding;
 import com.zoom.happiestplaces.model.MenuItem;
+import com.zoom.happiestplaces.model.OrderMenuItem;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     ListItemOrderBinding mBinding;
     Context mContext;
-    private List<MenuItem> mOrderList;
+    private List<OrderMenuItem> mOrderList;
     public OrderAdapter(Context context) {
         mContext = context;
     }
@@ -30,7 +31,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        MenuItem OrderItem =mOrderList.get(position);
+        OrderMenuItem OrderItem =mOrderList.get(position);
         holder.bind(OrderItem);
     }
 
@@ -41,7 +42,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
         return mOrderList.size();
     }
-    public void setList(List<MenuItem> OrderList) {
+    public void setList(List<OrderMenuItem> OrderList) {
         mOrderList = OrderList;
         notifyDataSetChanged();
     }
@@ -53,12 +54,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             mBinding=binding;
             binding.getRoot().setOnClickListener(this);
         }
-        public void bind(MenuItem Order) {
-            if(Order.getName()!=null)
-                mBinding.itemTitle.setText(Order.getName());
-            if(Order.getQty()!=0)
-                mBinding.itemQty.setText(" X  "+Integer.toString(Order.getQty()));
-            Double total=Order.getQty()*Order.getPrice();
+        public void bind(OrderMenuItem menuItem) {
+            if(menuItem.getName()!=null)
+                mBinding.itemTitle.setText(menuItem.getName());
+            if(menuItem.getQty()!=0)
+                mBinding.itemQty.setText(" X  "+Integer.toString(menuItem.getQty()));
+            Double total=menuItem.getQty()*menuItem.getPrice();
             mBinding.totalItemValue.setText("Rs "+Double.toString(total));
             //mBinding.qtyLabel.setText(Integer.toString(cartItem.getQty()));
             }

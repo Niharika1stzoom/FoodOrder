@@ -33,7 +33,7 @@ public class FoodMenuFragment extends Fragment {
     private FoodMenuFragmentBinding mBinding;
     private FoodMenuViewModel mViewModel;
     private FoodMenuAdapter mAdapter;
-    private UUID mRestaurantId;
+    private UUID mRestaurantId, mQRcode;
 
     public static FoodMenuFragment newInstance() {
         return new FoodMenuFragment();
@@ -45,7 +45,7 @@ public class FoodMenuFragment extends Fragment {
 
         mBinding= FoodMenuFragmentBinding.inflate(inflater,container,false);
         View view=mBinding.getRoot();
-        checkOrderStatus();
+        //checkOrderStatus();
         initViewModel();
         initRecyclerView();
         return view;
@@ -91,13 +91,18 @@ public class FoodMenuFragment extends Fragment {
 
         //get restaurant
         if (getArguments() != null) {
-            if (getArguments().containsKey(RestaurantUtils.ARG_RESTAURANT_ID)) {
+            /*if (getArguments().containsKey(RestaurantUtils.ARG_RESTAURANT_ID)) {
                 mRestaurantId = UUID.fromString(getArguments().getString(RestaurantUtils.ARG_RESTAURANT_ID));
+            }*/
+            if (getArguments().containsKey(RestaurantUtils.ARG_QRCode_ID)) {
+                mQRcode = UUID.fromString(getArguments().getString(RestaurantUtils.ARG_QRCode_ID));
+                SharedPrefUtils.createOrder(getActivity().getApplicationContext(),mQRcode);
             }
         }
+
         else
         {
-
+                //it should be already there
         }
     }
 
@@ -109,7 +114,26 @@ public class FoodMenuFragment extends Fragment {
     }
 
     private void getRestaurantMenu() {
-        mViewModel.getMenuList(mRestaurantId)
+        //TODO:Save restaurant details in menu this has to be done once
+        mViewModel.getMenuList(mQRcode)
+                .observe(getViewLifecycleOwner(), restaurant -> {
+                    displayLoader();
+                    if(restaurant==null || restaurant.getMenuList().size()==0) {
+
+                        //SharedPrefUtils.createOrder(getActivity().getApplicationContext(),mQRcode,restaurant);
+                        if(AppUtils.isNetworkAvailableAndConnected(getContext()))
+                            displayEmptyView();
+                        else
+                            AppUtils.showSnackbar(getView(),getString(R.string.network_err));
+                        mBinding.recyclerView.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        SharedPrefUtils.setRestaurant(getActivity().getApplicationContext(),restaurant);
+                        setTitle();
+                        displayDataView(restaurant.getMenuList());
+                    }
+                });
+       /* mViewModel.getMenuList(mRestaurantId)
                 .observe(getViewLifecycleOwner(), menuList -> {
                     displayLoader();
         if(menuList==null || menuList.size()==0) {
@@ -122,9 +146,10 @@ public class FoodMenuFragment extends Fragment {
         else {
             displayDataView(menuList);
         }
-    });
+    });*/
 }
     private void setTitle() {
+        if(mViewModel.getRestaurant()!=null)
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
             ((AppCompatActivity) getActivity()).getSupportActionBar()
                     .setTitle(mViewModel.getRestaurant().getName());

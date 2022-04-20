@@ -67,7 +67,7 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_gravity="left"
             android:text="@string/grand_total_label"
-           android:padding="@dimen/margin_large"
+           android:padding="@dimen/padding_small"
             android:textColor="@color/item_color_title"
             android:textSize="@dimen/font_medium"
             android:textStyle="bold"
@@ -77,8 +77,8 @@
             android:id="@+id/grand_total_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_large"
             android:layout_marginRight="@dimen/margin"
+            android:padding="@dimen/padding_small"
             android:textSize="@dimen/font_medium"
             android:layout_gravity="right"
             android:ellipsize="end"
@@ -163,7 +163,6 @@
         android:layout_height="wrap_content"
         android:text="@string/place_order"
         android:layout_margin="@dimen/margin_large"
-
         app:layout_constraintTop_toBottomOf="@id/redeem_container"
         app:layout_constraintLeft_toRightOf="@+id/cancel_button"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -186,7 +185,6 @@
         android:textColor="@color/item_color_like"
         android:textStyle="bold"
         tools:text="Your order has been places " />
-
 
         <androidx.constraintlayout.widget.Group
         android:id="@+id/buttons_group"

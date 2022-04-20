@@ -7,5 +7,10 @@ public interface AppConstants {
     String KEY_ORDER_ID ="order_id" ;
     String KEY_RESTAURANT_NAME = "restaurant_name";
     int NEW_USER_POINTS = 100;
-    int NOT_MINS =60 ;
+    int NOT_MINS =0 ;
+    enum Status{Delivered,Paid,Placed,Cancel};
+    int PARTY_POPPER_UNICODE=0x1F389;
+
+
+    public static final String BASE_URL ="https://happiestplace.herokuapp.com/" ;
 }

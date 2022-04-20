@@ -7,9 +7,10 @@ public class Customer {
     String name;
     String emailId;
     String credentials;
-    int current_pts;
+    double current_pts;
     int lifetime_pts;
     String photoURL;
+    String phone,address;
 
     public Customer(String name, String emailId, String credentials,String photoURL) {
         id=UUID.randomUUID();
@@ -17,6 +18,14 @@ public class Customer {
         this.emailId = emailId;
         this.credentials = credentials;
         this.photoURL=photoURL;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public UUID getId() {
@@ -47,7 +56,7 @@ public class Customer {
         return credentials;
     }
 
-    public int getCurrent_pts() {
+    public double getCurrent_pts() {
         return current_pts;
     }
 

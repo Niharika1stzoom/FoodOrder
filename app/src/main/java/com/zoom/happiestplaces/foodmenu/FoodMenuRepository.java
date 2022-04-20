@@ -1,11 +1,14 @@
 package com.zoom.happiestplaces.foodmenu;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.Restaurant;
 import com.zoom.happiestplaces.network.RestaurantApi;
+import com.zoom.happiestplaces.util.AppConstants;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,12 +24,13 @@ public class FoodMenuRepository {
         mApiInterface = apiInterface;
     }
 
-    public void getMenuList(MutableLiveData<List<MenuItem>> liveData, UUID restaurantName) {
-        Call<List<MenuItem>> call = mApiInterface.getMenu();
-        call.enqueue(new Callback<List<MenuItem>>() {
+    public void getMenuList(MutableLiveData<Restaurant> liveData, UUID tableId) {
+        //Call<List<MenuItem>> call = mApiInterface.getMenu();
+        Call<Restaurant> call = mApiInterface.getRestaurantDishes(tableId);
+        call.enqueue(new Callback<Restaurant>() {
             @Override
-            public void onResponse(@NonNull Call<List<MenuItem>> call,
-                                   @NonNull Response<List<MenuItem>> response) {
+            public void onResponse(@NonNull Call<Restaurant> call,
+                                   @NonNull Response<Restaurant> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
                 } else {
@@ -34,7 +38,7 @@ public class FoodMenuRepository {
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<List<MenuItem>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Restaurant> call, @NonNull Throwable t) {
                 liveData.postValue(null);
             }
         });

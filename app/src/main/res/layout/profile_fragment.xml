@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.ProfileFragment">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_profile_img"
+        android:layout_margin="16dp"
+        android:layout_width="@dimen/item_feed_profile_size"
+        android:layout_height="@dimen/item_feed_profile_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_placeholder"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        />
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingEnd="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:textColor="@color/item_color_title"
+        android:textSize="@dimen/font_medium"
+        android:textStyle="bold"
+        android:text="@string/anonymous_user"
+        app:layout_constraintLeft_toRightOf="@id/item_profile_img"
+        app:layout_constraintTop_toTopOf="@id/item_profile_img"
+        app:layout_constraintBottom_toBottomOf="@id/item_profile_img"
+        tools:text="Anonymous" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/email"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="@dimen/font_medium"
+        android:drawableLeft="@drawable/ic_action_email"
+    app:layout_constraintTop_toBottomOf="@id/item_profile_img"
+    app:layout_constraintStart_toStartOf="@id/item_profile_img"
+        android:text="anonymous@gmail.com"
+        android:drawablePadding="4dp"
+        tools:text="anonymous@gmail.com"/>
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/phone"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone"
+        android:drawableLeft="@drawable/ic_action_phone"
+        android:layout_marginVertical="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        app:layout_constraintStart_toStartOf="@id/email"
+        android:drawablePadding="4dp"
+        tools:text="777777777"/>
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_action_address"
+        android:maxLines="3"
+        android:hint="@string/address"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/phone"
+        app:layout_constraintStart_toStartOf="@id/email"
+        android:drawablePadding="4dp"
+        tools:text="A 902, Lily Apartment, Baner Road,Pune-411087 "/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/rewards_pts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_action_star"
+        android:maxLines="3"
+        android:layout_marginVertical="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/address"
+        app:layout_constraintStart_toStartOf="@id/email"
+        android:text="@string/total_points"
+        android:drawablePadding="4dp"
+        android:textSize="@dimen/font_medium"
+        tools:text="Your total reward points 100"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_action_logout"
+        android:focusable="true"
+        android:maxLines="3"
+        android:layout_marginLeft="4dp"
+        android:layout_marginVertical="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/rewards_pts"
+        app:layout_constraintStart_toStartOf="@id/email"
+        android:text="@string/logout"
+        android:drawablePadding="4dp"
+        android:textSize="@dimen/font_medium"
+        android:textStyle="bold"
+        tools:text="Logout"/>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_marginTop="16dp"
+        android:text="@string/save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logout"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,7 @@ public class OrderUtils {
        String send_msg =OrderUtils.getSmsMsg(context);
        try {
             SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phone_Num, null, send_msg, null, null); // adding number and text
+           // sms.sendTextMessage(phone_Num, null, send_msg, null, null); // adding number and text
         } catch (Exception e) {
             Toast.makeText(context, "Your order is not placed.Unable to send order msg."+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -39,12 +39,12 @@ public class OrderUtils {
     }
 
     private static String getSmsMsg(Context context) {
-        Order order=SharedPrefUtils.getOrder(context);
+      Order order=SharedPrefUtils.getOrder(context);
         String title="Order from Table num: "+order.getTable();
         String orderItems="";
-        List<MenuItem> orderList=SharedPrefUtils.getListView(context);
+     /*   List<MenuItem> orderList=SharedPrefUtils.getListView(context);
         for(MenuItem item:orderList)
-            orderItems+="\n"+item.getName()+"   X "+item.getQty();
+            orderItems+="\n"+item.getName()+"   X "+item.getQty();*/
         String total="\nTotal Pay: Rs "+SharedPrefUtils.showTotal(context);
         return title+orderItems+total;
 

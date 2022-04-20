@@ -1,6 +1,7 @@
 package com.zoom.happiestplaces.foodmenu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zoom.happiestplaces.databinding.ListItemFoodMenuBinding;
+import com.zoom.happiestplaces.di.ApiModule;
 import com.zoom.happiestplaces.model.MenuItem;
+import com.zoom.happiestplaces.model.OrderMenuItem;
+import com.zoom.happiestplaces.network.RestaurantApi;
+import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
 
@@ -68,8 +73,9 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
             if(FoodMenu.getPrice()!=null)
                 mBinding.itemPrice.setText("Rs "+FoodMenu.getPrice().toString());
             if (FoodMenu.getImageUrl()!= null)
-                AppUtils.setImage(mContext, FoodMenu.getImageUrl(), mBinding.itemProfileImg);
-            MenuItem cartItem=SharedPrefUtils.containsItem(mContext,FoodMenu.getId());
+                AppUtils.setImage(mContext, AppUtils.get_absolute_url(AppConstants.BASE_URL,FoodMenu.getImageUrl()),
+                        mBinding.itemProfileImg);
+           OrderMenuItem cartItem=SharedPrefUtils.containsItem(mContext,FoodMenu.getId());
             if(cartItem!=null) {
                 mBinding.addButton.setVisibility(View.GONE);
                 mBinding.qtyButtonGroup.setVisibility(View.VISIBLE);

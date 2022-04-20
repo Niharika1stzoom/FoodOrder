@@ -1,0 +1,62 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+            app:key="@string/ordersSetting"
+            app:title="@string/ordersSetting"
+            app:icon="@drawable/ic_action_order"
+            app:summary="See your order history"/>
+
+    <Preference
+            app:key="@string/profile"
+            app:title="@string/profile"
+            app:icon="@drawable/ic_action_profile"
+            app:summary="Edit and see the profile details"/>
+
+    <Preference
+        app:key="@string/sign_in_settings"
+        app:title="@string/sign_in_settings"
+        app:icon="@drawable/ic_action_signin"
+        app:summary="@string/signInSummary"/>
+
+    <Preference
+        app:key="@string/inviteEarnPreference"
+        app:title="@string/inviteEarnPreference"
+        app:icon="@drawable/ic_action_invite"
+        app:summary="@string/inviteSummary"/>
+
+    <Preference
+        app:key="@string/help"
+        app:title="@string/help"
+        app:icon="@drawable/ic_action_help"
+        app:summary="@string/inviteSummary"/>
+
+    <SwitchPreferenceCompat
+            app:key="@string/notification"
+            app:title="@string/notification"
+        app:icon="@drawable/ic_action_notification" />
+
+        <SwitchPreferenceCompat
+            app:isPreferenceVisible="false"
+            app:dependency="@string/notification"
+            app:key="attachment"
+            app:summaryOff="@string/attachment_summary_off"
+            app:summaryOn="@string/attachment_summary_on"
+            app:title="@string/attachment_title" />
+    <ListPreference
+        app:isPreferenceVisible="false"
+        app:defaultValue="reply"
+        app:entries="@array/reply_entries"
+        app:entryValues="@array/reply_values"
+        app:key="reply"
+        app:title="@string/reply_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:isPreferenceVisible="false"
+        app:key="signature"
+        app:title="@string/signature_title"
+        app:useSimpleSummaryProvider="true" />
+
+
+</PreferenceScreen>

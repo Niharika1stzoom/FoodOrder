@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/primaryDarkColor"
+        android:background="@color/primaryColor"
         android:textColor="@color/primaryTextColor"
         android:padding="6dp"
         android:textSize="20sp"

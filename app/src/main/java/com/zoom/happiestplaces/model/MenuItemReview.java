@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class MenuItemReview {
     private UUID id;
-    private String menuItemId;
+    private UUID menuItemId;
     private String reviewText;
     private float numStars;
 
@@ -12,7 +12,7 @@ public class MenuItemReview {
         return id;
     }
 
-    public String getMenuItemId() {
+    public UUID getMenuItemId() {
         return menuItemId;
     }
 
@@ -26,7 +26,7 @@ public class MenuItemReview {
 
 
 
-    public MenuItemReview(String reviewText, float numStars, String menuItemId) {
+    public MenuItemReview(String reviewText, float numStars, UUID menuItemId) {
         id=UUID.randomUUID();
         this.reviewText = reviewText;
         this.numStars = numStars;

@@ -31,5 +31,14 @@
         android:name="com.zoom.happiestplaces.review.displayReview.DisplayReviewFragment"
         android:label="Reviews"
         tools:layout="@layout/display_review_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.zoom.happiestplaces.settings.SettingsFragment"
+        android:label="@string/settingsFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.zoom.happiestplaces.profile.ProfileFragment"
+        android:label="@string/profileFragment"
+        tools:layout="@layout/profile_fragment" />
 
 </navigation>

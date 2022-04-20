@@ -29,7 +29,7 @@
     <string name="alert_dialog_add_title">No Items</string>
     <string name="alert_no_items_msg">Please add items in your order</string>
     <string name="ok">OK</string>
-    <string name="success_msg">Your Order will be delivered to your table soon.\n Enjoy your meal!</string>
+    <string name="success_msg">Your Order will be delivered to your table soon.</string>
     <string name="review_button">Rate your Experience</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -142,5 +142,37 @@
     <string name="increment">Add item to your order</string>
     <string name="share">Share</string>
     <string name="sign_in">"You are signed in as "</string>
+    <string name="order_fail">Sorry, Your order has not been placed.</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="profile">Profile</string>
+    <string name="notification">Notifications</string>
+    <string name="sign_in_settings">Google Sign In</string>
+    <string name="signInSummary">Sign In to earn free points</string>
+    <string name="inviteEarnPreference">Invite and Earn</string>
+    <string name="inviteSummary">Invite 5 friends to earn Points</string>
+    <string name="help">Help</string>
+    <string name="ordersSetting">Orders</string>
+    <string name="settingsFragment">Settings</string>
+    <string name="profileFragment">Profile</string>
+    <string name="logout">Log Out</string>
+    <string name="total_points">Total reward points</string>
+    <string name="save">Save</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="sign_in_err">There was a problem signing you in.Please try again.</string>
+    <string name="order_success_for_this_order">"points for this order"</string>
 
 </resources>

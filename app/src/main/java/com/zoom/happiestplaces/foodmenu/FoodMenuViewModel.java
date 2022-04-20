@@ -34,16 +34,16 @@ public class FoodMenuViewModel extends AndroidViewModel {
         mRestaurantLiveData=new MutableLiveData<>();
     }
 
-    public LiveData<List<MenuItem>> getMenuList(UUID restaurant) {
-        mMenuRepository.getMenuList(mMenuList,restaurant);
-        return mMenuList;
-    }
-
-
-    public LiveData<Restaurant> getRestaurant(UUID mRestaurantId) {
-        mMenuRepository.getRestaurant(mRestaurantId,mRestaurantLiveData);
+    public LiveData<Restaurant> getMenuList(UUID qrcode) {
+        mMenuRepository.getMenuList(mRestaurantLiveData,qrcode);
         return mRestaurantLiveData;
     }
+
+
+   /* public LiveData<Restaurant> getRestaurant(UUID mRestaurantId) {
+        mMenuRepository.getRestaurant(mRestaurantId,mRestaurantLiveData);
+        return mRestaurantLiveData;
+    }*/
 
     public Restaurant getRestaurant() {
         return SharedPrefUtils.getOrder(mContext).getRestaurant();

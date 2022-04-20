@@ -12,6 +12,7 @@ import androidx.work.WorkManager;
 
 import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.model.Order;
+import com.zoom.happiestplaces.model.response.OrderResponse;
 import com.zoom.happiestplaces.util.NotificationUtils;
 import com.zoom.happiestplaces.util.OrderUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
@@ -30,6 +31,7 @@ public class OrderViewModel extends AndroidViewModel{
     private Context mContext;
     WorkManager mWorkManager;
     MutableLiveData<Customer> mCustomerLiveData;
+    MutableLiveData<OrderResponse> mOrderLiveData;
     @Inject
     OrderRepository orderRepository;
     private MutableLiveData<Customer> mNewCustomerLiveData;
@@ -40,12 +42,20 @@ public class OrderViewModel extends AndroidViewModel{
         mContext=application.getApplicationContext();
         mCustomerLiveData=new MutableLiveData<>();
         mNewCustomerLiveData=new MutableLiveData<>();
+        mOrderLiveData=new MutableLiveData<>();
     }
 
 
-    public Boolean placeOrder() {
+    public LiveData<OrderResponse> placeOrder() {
+        addCustomerToOrder();
+        orderRepository.placeOrder(mOrderLiveData,
+                SharedPrefUtils.getOrder(mContext));
+        //OrderUtils.sendSms(mContext, SharedPrefUtils.getOrder(mContext));
+        return mOrderLiveData ;
+    }
 
-        return OrderUtils.sendSms(mContext, SharedPrefUtils.getOrder(mContext));
+    private void addCustomerToOrder() {
+        SharedPrefUtils.addCustomerOrder(mContext);
     }
 
     public void clearOrder() {
@@ -85,8 +95,8 @@ public class OrderViewModel extends AndroidViewModel{
 
     }
 
-    public LiveData<Customer> addCustomer(GoogleSignInAccount account) {
-        orderRepository.addCustomer(account,mNewCustomerLiveData);
+    public LiveData<Customer> addCustomer(Customer customer) {
+        orderRepository.addCustomer(customer,mNewCustomerLiveData);
         return mNewCustomerLiveData;
     }
 

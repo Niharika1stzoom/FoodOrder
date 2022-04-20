@@ -112,7 +112,7 @@ public class AddReviewFragment extends Fragment {
             else {
                 hideLoader();
                 mViewModel.startReview(order);
-                mAdapter.setList(order.getItemsList());
+                //mAdapter.setList(order.getItemsList());
                 initUI(order);
                 //set rest details in review
 

@@ -27,11 +27,11 @@ public class ReviewRepository {
         mApiInterface = apiInterface;
     }
 
-    public void addReviewMenuItem(String menuItemId, float stars) {
+    public void addReviewMenuItem(UUID menuItemId, float stars) {
         sReviewSingleton.addReviewMenuItem(menuItemId,stars);
     }
 
-    public MenuItemReview getMenuItemReview(String menuItemId) {
+    public MenuItemReview getMenuItemReview(UUID menuItemId) {
         return sReviewSingleton.getMenuItemReview(menuItemId);
     }
 

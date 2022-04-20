@@ -1,6 +1,9 @@
 package com.zoom.happiestplaces.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 public class Restaurant implements Serializable {
@@ -9,6 +12,9 @@ public class Restaurant implements Serializable {
     String name;
     float num_of_stars;
     int total_reviews;
+    Table table;
+    @SerializedName("dish_set")
+    List<MenuItem> menuList;
 
     public Restaurant(UUID id, String phoneNum, String name, float num_of_stars, int total_reviews) {
         this.id = id;
@@ -18,6 +24,14 @@ public class Restaurant implements Serializable {
         this.total_reviews = total_reviews;
     }
 
+
+    public Table getTable() {
+        return table;
+    }
+
+    public List<MenuItem> getMenuList() {
+        return menuList;
+    }
     public void setTotal_reviews(int total_reviews) {
         this.total_reviews = total_reviews;
     }

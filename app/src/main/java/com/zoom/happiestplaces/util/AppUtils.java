@@ -22,6 +22,21 @@ public class AppUtils {
                 .centerCrop()
                 .into(imageView);
     }
+    public static String get_absolute_url(String basedURL, String imageURL) {
+        String absoluteURL;
+        if(basedURL.endsWith("/")){
+            String newBasedURL = basedURL.substring(0, basedURL.length() - 1);
+          //  absoluteURL= String.join("", newBasedURL, imageURL);
+            absoluteURL=""+newBasedURL+imageURL;
+        }
+        else{
+            //absoluteURL=String.join("", basedURL, imageURL);
+            absoluteURL=""+basedURL+imageURL;
+        }
+        return absoluteURL;
+    }
+
+
 
 
     public static void shareFoodMenu(Context context, MenuItem foodMenu) {
