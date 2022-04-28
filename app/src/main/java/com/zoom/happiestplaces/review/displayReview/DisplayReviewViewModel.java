@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.zoom.happiestplaces.foodmenu.FoodMenuRepository;
 import com.zoom.happiestplaces.model.Restaurant;
 import com.zoom.happiestplaces.model.RestaurantReview;
+import com.zoom.happiestplaces.model.response.ReviewDataResponse;
 import com.zoom.happiestplaces.review.ReviewRepository;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class DisplayReviewViewModel extends AndroidViewModel {
     ReviewRepository reviewRepo;
     @Inject
     FoodMenuRepository menuRepository;
-    MutableLiveData<List<RestaurantReview>> reviewLiveData;
+    MutableLiveData<List<ReviewDataResponse>> reviewLiveData;
     private MutableLiveData<Restaurant> restaurantLiveData;
 
     @Inject
@@ -34,13 +35,13 @@ public class DisplayReviewViewModel extends AndroidViewModel {
         reviewLiveData=new MutableLiveData<>();
         restaurantLiveData=new MutableLiveData<>();
     }
-    public LiveData<List<RestaurantReview>> getRestaurantReviews(UUID mRestaurantId) {
+    public LiveData<List<ReviewDataResponse>> getRestaurantReviews(UUID mRestaurantId) {
         reviewRepo.getRestaurantReviews(mRestaurantId,reviewLiveData);
         return reviewLiveData;
     }
-
     public LiveData<Restaurant> getRestaurant(UUID restaurantId) {
-        menuRepository.getRestaurant(restaurantId,restaurantLiveData);
+        reviewRepo.getRestaurant(restaurantId,restaurantLiveData);
         return restaurantLiveData;
     }
+
 }

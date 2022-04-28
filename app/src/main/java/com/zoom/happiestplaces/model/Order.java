@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
+//Used to create order in app
 public class Order implements Serializable {
     private UUID id;
     @SerializedName("table_id")
@@ -24,12 +24,9 @@ public class Order implements Serializable {
     private Restaurant restaurant;
     @SerializedName("orders")
     public List<OrderMenuItem> foodItemsList;
-//    private HashMap<UUID,MenuItem> foodItems;
     Double points;
 
     public Order(UUID table, Restaurant restaurant) {
-        //id=UUID.randomUUID();
-  //      foodItems=new HashMap<>();
         this.restaurant = restaurant;
         foodItemsList=new ArrayList<>();
         this.table=table;
@@ -44,9 +41,6 @@ public class Order implements Serializable {
     }
 
     public Order(UUID table) {
-        //id=UUID.randomUUID();
-    //    foodItems=new HashMap<>();
-        //this.restaurant = restaurant;
         foodItemsList=new ArrayList<>();
         this.table=table;
     }
@@ -76,8 +70,6 @@ public class Order implements Serializable {
     public void setOrderExecuted(Boolean orderExecuted) {
         this.orderExecuted = orderExecuted;
     }
-
-
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
@@ -88,9 +80,7 @@ public class Order implements Serializable {
     public Restaurant getRestaurant() {
         return restaurant;
     }
-    /*public HashMap<UUID, MenuItem> getFoodItems() {
-        return foodItems;
-    }*/
+
     public OrderMenuItem getMenuItem(UUID id)
     {
         OrderMenuItem menuItem=null;
@@ -117,7 +107,6 @@ public class Order implements Serializable {
         OrderMenuItem orderMenuItem=new OrderMenuItem(item);
         orderMenuItem.setQty(1);
         foodItemsList.add(orderMenuItem);
-        //return foodItems.put(item.getId(),item);
     }
     public Double getTotalPrice(){
         Double total=0.0;
@@ -147,13 +136,14 @@ public class Order implements Serializable {
         }
 
     public void removeMenuItem(UUID id) {
-        getItemsList().remove(id);
+        OrderMenuItem item=getMenuItem(id);
+        getItemsList().remove(item);
     }
 
     public void cancelOrder() {
         getItemsList().clear();
     }
-    Boolean isOrderEmpty() {
+    public Boolean isOrderEmpty() {
         if(getItemsList().isEmpty())
             return true;
         else

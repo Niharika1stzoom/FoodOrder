@@ -27,7 +27,7 @@ public class MenuItemReview {
 
 
     public MenuItemReview(String reviewText, float numStars, UUID menuItemId) {
-        id=UUID.randomUUID();
+        id=menuItemId;
         this.reviewText = reviewText;
         this.numStars = numStars;
         this.menuItemId = menuItemId;

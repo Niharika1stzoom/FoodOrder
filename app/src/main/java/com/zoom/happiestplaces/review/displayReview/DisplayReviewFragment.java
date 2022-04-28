@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.AddReviewFragmentBinding;
 import com.zoom.happiestplaces.databinding.DisplayReviewFragmentBinding;
 import com.zoom.happiestplaces.model.Restaurant;
+import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.RestaurantUtils;
 import com.zoom.happiestplaces.util.ReviewUtils;
@@ -46,19 +48,11 @@ public class DisplayReviewFragment extends Fragment {
             if (getArguments().containsKey(RestaurantUtils.ARG_RESTAURANT_ID)) {
                 mRestaurantId = UUID.fromString(getArguments().getString(RestaurantUtils.ARG_RESTAURANT_ID));
             }
-    /*  //in case dont want to use the net
-        if (getArguments().containsKey(RestaurantUtils.ARG_RESTAURANT)) {
-                mRestaurant= (Restaurant) getArguments().getSerializable(RestaurantUtils.ARG_RESTAURANT);
-                mRestaurant.setTotal_reviews(222);
-                mRestaurant.setNum_of_stars(2.5f);
-                Log.d("FoodDebug", "Restaurant Fragment" + mRestaurant.getName());
-            }*/
         }
         else {
-            //TODO:err msg and navigate
+            //TODO:err msg and navigate take from order
         }
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -77,14 +71,13 @@ public class DisplayReviewFragment extends Fragment {
     }
 
     private void initUI(Restaurant restaurant) {
-
         mBinding.restaurantName.setText(restaurant.getName());
-        if(restaurant.getTotal_reviews()==0)
+        if(restaurant.getRatings().getNumber_of_reviewer()==0)
             mBinding.numReviews.setText(getString(R.string.no_reviews));
         else
-            mBinding.numReviews.setText(ReviewUtils.displayNumReviews(restaurant.getTotal_reviews()));
-        mBinding.ratingBarRestaurant.setRating(restaurant.getNum_of_stars());
-        mBinding.totalRating.setText(Float.toString(restaurant.getNum_of_stars()));
+            mBinding.numReviews.setText(ReviewUtils.displayNumReviews(restaurant.getRatings().getNumber_of_reviewer()));
+        mBinding.ratingBarRestaurant.setRating(restaurant.getRatings().getRating());
+        mBinding.totalRating.setText(ReviewUtils.getRatingStringFormat(restaurant.getRatings().getRating()));
     }
 
     void initViewModel(){
@@ -101,13 +94,14 @@ public class DisplayReviewFragment extends Fragment {
     }
 
     private void getReviewDetails() {
+        displayLoader();
         mViewModel.getRestaurant(mRestaurantId).observe(getViewLifecycleOwner(), restaurant -> {
             if(restaurant==null) {
                 if(!AppUtils.isNetworkAvailableAndConnected(getContext()))
                     AppUtils.showSnackbar(getView(),getString(R.string.network_err));
-
             }
             else {
+                hideLoader();
                 initUI(restaurant);
             }
         });

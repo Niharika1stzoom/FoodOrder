@@ -131,7 +131,7 @@
     <string name="main_notification_channel_name">review_reminder</string>
     <string name="review_reminder_notification_body">Rate your last order</string>
     <string name="notification_content_title">Rate your Order</string>
-    <string name="redeem_default_label">Sign In now to redeem 100 points in your order</string>
+    <string name="redeem_default_label">Sign In now to earn 100 reward points</string>
     <string name="redeem_welcome_label">Unlock free dishes and special discounts.\n100 Rewards points are waiting for you.</string>
     <string name="no_reviews">No Reviews yet</string>
     <string name="default_rating">0.0</string>
@@ -156,7 +156,6 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="profile">Profile</string>
     <string name="notification">Notifications</string>
     <string name="sign_in_settings">Google Sign In</string>
@@ -174,5 +173,11 @@
     <string name="phone">Phone</string>
     <string name="sign_in_err">There was a problem signing you in.Please try again.</string>
     <string name="order_success_for_this_order">"points for this order"</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="code">Code</string>
+    <string name="country">Country</string>
+    <string name="textEmptyError">Please enter the value</string>
+    <string name="data_updated">Your Profile is updated</string>
 
 </resources>

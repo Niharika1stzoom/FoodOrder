@@ -39,12 +39,6 @@ public class FoodMenuViewModel extends AndroidViewModel {
         return mRestaurantLiveData;
     }
 
-
-   /* public LiveData<Restaurant> getRestaurant(UUID mRestaurantId) {
-        mMenuRepository.getRestaurant(mRestaurantId,mRestaurantLiveData);
-        return mRestaurantLiveData;
-    }*/
-
     public Restaurant getRestaurant() {
         return SharedPrefUtils.getOrder(mContext).getRestaurant();
     }

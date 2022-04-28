@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_add.xml" value="0.122" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_email.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_help.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_invite.xml" value="0.1" />
@@ -16,10 +17,15 @@
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_signIn.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_signin.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_star.xml" value="0.1" />
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-anydpi/ic_action_starsmall.xml" value="0.1" />
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.122" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable-v24/ic_reply_24dp.xml" value="0.1225" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/background_image.xml" value="0.165" />
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/drawable_edges.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/edittext_bkg.xml" value="0.1235" />
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/ic_launcher_food_foreground.xml" value="0.122" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/round_button.xml" value="0.1225" />
+        <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/drawable/rounded_edges.xml" value="0.1295" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/font/montserrat.xml" value="0.1484375" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/niharika/android/FoodOrder/app/src/main/res/layout/add_review_fragment.xml" value="0.1" />

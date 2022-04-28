@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
+        app:isPreferenceVisible="false"
             app:key="@string/ordersSetting"
             app:title="@string/ordersSetting"
             app:icon="@drawable/ic_action_order"
@@ -14,18 +15,21 @@
             app:summary="Edit and see the profile details"/>
 
     <Preference
+        app:isPreferenceVisible="false"
         app:key="@string/sign_in_settings"
         app:title="@string/sign_in_settings"
         app:icon="@drawable/ic_action_signin"
         app:summary="@string/signInSummary"/>
 
     <Preference
+        app:isPreferenceVisible="false"
         app:key="@string/inviteEarnPreference"
         app:title="@string/inviteEarnPreference"
         app:icon="@drawable/ic_action_invite"
         app:summary="@string/inviteSummary"/>
 
     <Preference
+        app:isPreferenceVisible="false"
         app:key="@string/help"
         app:title="@string/help"
         app:icon="@drawable/ic_action_help"
@@ -40,9 +44,9 @@
             app:isPreferenceVisible="false"
             app:dependency="@string/notification"
             app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
+
     <ListPreference
         app:isPreferenceVisible="false"
         app:defaultValue="reply"

@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.OrderFragmentBinding;
 import com.zoom.happiestplaces.model.Customer;
+import com.zoom.happiestplaces.model.response.OrderResponse;
 import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.CustomerUtils;
@@ -39,6 +40,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.zoom.happiestplaces.util.SignInUtils;
 
+import java.util.UUID;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -48,10 +51,6 @@ public class OrderFragment extends Fragment {
     private OrderAdapter mAdapter;
     private ActivityResultLauncher<Intent> mStartForResult;
     private GoogleSignInClient mGoogleSignInClient;
-
-    public static OrderFragment newInstance() {
-        return new OrderFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,10 +72,18 @@ public class OrderFragment extends Fragment {
     }
     private void updateUI(GoogleSignInAccount account) {
         //check whether viewmodel is created
-        if(account!=null)
+        if(account!=null && mViewModel.getCustomer()!=null)
         {
             mBinding.signInButton.setVisibility(View.GONE);
-            setRedeemPoints(SharedPrefUtils.getCustomer(getContext()).getCurrent_pts());
+            getRedeemPoints();
+            //setRedeemPoints(SharedPrefUtils.getCustomer(getContext()).getCurrent_pts());
+        }
+        else
+        {
+            if(account!=null && mViewModel.getCustomer()==null)
+            {
+                logOut();
+            }
         }
     }
     @Override
@@ -85,12 +92,10 @@ public class OrderFragment extends Fragment {
         mBinding = OrderFragmentBinding.inflate(inflater, container, false);
         View view = mBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
-
-        ;
         //If there is no order and order executed is false then handle the back
-        if (mViewModel.checkOrderEmpty()
+        if (SharedPrefUtils.checkOrderIsEmpty(getActivity().getApplicationContext())
                 && !mViewModel.isOrderTrue()) {
-            NavHostFragment.findNavController(this).navigate(R.id.foodMenuFragment);
+            NavHostFragment.findNavController(getParentFragment()).navigate(R.id.foodMenuFragment);
         }
         initOrderView();
         //TODO:if account is null
@@ -104,9 +109,10 @@ public class OrderFragment extends Fragment {
     }
 
     private void getRedeemPoints() {
-        //For this to work u will need cust id from api
-        mViewModel.getRedeemPoints(mViewModel.getCustomer().getId()).observe(getViewLifecycleOwner(), customer -> {
+        mViewModel.getRedeemPoints(mViewModel.getCustomer()).observe(getViewLifecycleOwner(), customer -> {
             if(customer==null) {
+                if(!AppUtils.isNetworkAvailableAndConnected(getActivity().getApplicationContext()))
+                    setRedeemPoints(mViewModel.getCustomer().getCurrent_pts());
             }
             else {
                 mViewModel.saveCustomer(customer);
@@ -116,9 +122,6 @@ public class OrderFragment extends Fragment {
     }
 
     private void initSignIn() {
-       /* GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();*/
         GoogleSignInOptions gso= SignInUtils.getSignInOptions();
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         mBinding.signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -131,18 +134,12 @@ public class OrderFragment extends Fragment {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             mViewModel.addCustomer(CustomerUtils.getCustomerAccount(account)).observe(getViewLifecycleOwner(), customer -> {
-                //TODO:check this line
                 if(customer==null) {
-                    //For testing as no api
-                   // mViewModel.saveCustomer(CustomerUtils.getCustomerAccount(account));
-                    //updateUI(account);
-                    //logOut();
+                    Log.d(AppConstants.TAG,"Customer is null");
                     AppUtils.showSnackbar(getView(),getString(R.string.sign_in_err));
                     logOut();
-
                 }
                 else {
-                    Log.d(AppConstants.TAG,"Cust id is"+customer.getId());
                     mViewModel.saveCustomer(customer);
                     //this will happen only once
                     updateUI(account);
@@ -151,16 +148,9 @@ public class OrderFragment extends Fragment {
             });
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.d(AppConstants.TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     private void initOrderView() {
@@ -172,6 +162,7 @@ public class OrderFragment extends Fragment {
         if (mViewModel.isOrderTrue()) {
             showExecutedOrderView();
         }
+
         mBinding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,64 +175,54 @@ public class OrderFragment extends Fragment {
                             NavHostFragment.findNavController(getParentFragment()).navigate(R.id.foodMenuFragment);
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert).show();
-
                alert.getButton(DialogInterface.BUTTON_POSITIVE)
                        .setTextColor(Color.BLACK);
                 alert.getButton(DialogInterface.BUTTON_NEGATIVE)
                         .setTextColor(Color.BLACK);
             }
         });
-        mBinding.placeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog alert=new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.alert_dialog_order_title)
-                        .setMessage(R.string.alert_order_confirm_msg)
-                        .setNegativeButton(R.string.no, null)
-                        .setPositiveButton(R.string.place_order, (dialog, which) -> {
-                            mBinding.buttonsGroup.setVisibility(View.INVISIBLE);
-                           mViewModel.placeOrder().observe(getViewLifecycleOwner(), order -> {
-                                if(order==null && !order.getStatus().equals(AppConstants.Status.Placed)) {
-                                    mBinding.buttonsGroup.setVisibility(View.VISIBLE);
-                                    AppUtils.showSnackbar(getView(),getString(R.string.order_fail));
-
-                                }
-                                else {
-                                    mBinding.successMsg.setVisibility(View.VISIBLE);
-                                    String s="You earned "+order.getPoints()+" points "+
-                                            new String(Character.toChars(AppConstants.PARTY_POPPER_UNICODE));
-                                    mBinding.successMsg.
-                                            setText(getString(R.string.success_msg)+s);
-                                    mViewModel.setOrderExecuted();
-                                    setReviewButton();
-                                    SharedPrefUtils.cancelOrder(getActivity().getApplicationContext());
-                                    //TODO:You will earn des many points if u place order
-                                    setRedeemPoints(order.getCurrent_pts());
-                                }
-                            });
-
-                         /*   if (mViewModel.placeOrder()) {
-                                //TODO:add customer in order
+        mBinding.placeOrder.setOnClickListener(view -> {
+            AlertDialog alert=new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.alert_dialog_order_title)
+                    .setMessage(R.string.alert_order_confirm_msg)
+                    .setNegativeButton(R.string.no, null)
+                    .setPositiveButton(R.string.place_order, (dialog, which) -> {
+                        mBinding.buttonsGroup.setVisibility(View.INVISIBLE);
+                        //when order is placed customer is added
+                       mViewModel.placeOrder().observe(getViewLifecycleOwner(), order -> {
+                            if(order==null && !order.getStatus().equals(AppConstants.Status.Placed)) {
+                                mBinding.buttonsGroup.setVisibility(View.VISIBLE);
+                                AppUtils.showSnackbar(getView(),getString(R.string.order_fail));
+                            }
+                            else {
                                 mBinding.successMsg.setVisibility(View.VISIBLE);
+                                String s="You will earn "+order.getPoints()+" points "+
+                                        new String(Character.toChars(AppConstants.PARTY_POPPER_UNICODE));
+                                mBinding.successMsg.
+                                        setText(getString(R.string.success_msg)+s);
                                 mViewModel.setOrderExecuted();
-                                setReviewButton();
+                                setReviewButton(order);
+                                //Clearing the order in Food menu
+                                //SharedPrefUtils.cancelOrder(getActivity().getApplicationContext());
+                                //TODO:You will earn des many points if u pay order
+                                //setRedeemPoints(order.getCurrent_pts());
+                            }
+                        });
+                    })
+                    .setIcon(R.mipmap.ic_launcher_happiest)
+                    .show();
 
-                            } else
-                                mBinding.buttonsGroup.setVisibility(View.VISIBLE);*/
-                        })
-                        .setIcon(R.mipmap.ic_launcher_happiest)
-                        .show();
-
-                alert.getButton(DialogInterface.BUTTON_POSITIVE)
-                        .setTextColor(Color.BLACK);
-                alert.getButton(DialogInterface.BUTTON_NEGATIVE)
-                        .setTextColor(Color.BLACK);
-            }
+            alert.getButton(DialogInterface.BUTTON_POSITIVE)
+                    .setTextColor(Color.BLACK);
+            alert.getButton(DialogInterface.BUTTON_NEGATIVE)
+                    .setTextColor(Color.BLACK);
         });
     }
 
-    private void setReviewButton() {
-            mViewModel.scheduleNotification(mViewModel.getCurrentOrder().getId(),
+    //Send Review Notification
+    private void setReviewButton(OrderResponse response) {
+        mViewModel.scheduleNotification(response.getId(),
+                   mViewModel.getCurrentOrder().getRestaurant().getId(),
                     mViewModel.getCurrentOrder().getRestaurant().getName());
     }
 
@@ -256,6 +237,7 @@ public class OrderFragment extends Fragment {
     }
 
     private void setTitle() {
+       if(mViewModel.getCurrentOrder().getRestaurant()!=null)
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
             ((AppCompatActivity) getActivity()).getSupportActionBar()
                     .setTitle(getString(R.string.table_num)
@@ -268,12 +250,10 @@ public class OrderFragment extends Fragment {
         setTitle();
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
-       //logOut();
-       }
+    }
 
     private void logOut() {
         mGoogleSignInClient.signOut()

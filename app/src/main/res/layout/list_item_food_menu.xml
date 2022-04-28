@@ -37,7 +37,8 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:textAlignment="center"
-            android:layout_marginVertical="@dimen/margin"
+            android:layout_marginTop="@dimen/margin_xsmall"
+            android:layout_marginBottom="@dimen/margin"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/item_color_title"
@@ -66,7 +67,14 @@
             app:layout_constraintRight_toRightOf="@id/item_name"
             app:layout_constraintTop_toBottomOf="@id/item_name"
             tools:text="Rs 500" />
-
+<RatingBar
+    android:id="@+id/ratingBar"
+    style="@style/Widget.AppCompat.RatingBar.Small"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/item_price"/>
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -75,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="end"
             android:lineSpacingExtra="2dp"
             android:textAlignment="center"
@@ -84,7 +91,7 @@
             android:textColor="@color/brown"
             android:textSize="@dimen/font_xmedium"
 
-            app:layout_constraintTop_toBottomOf="@id/item_price"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar"
             tools:text="Marinated in Red sauce"/>
 
         <androidx.constraintlayout.widget.Group
@@ -99,9 +106,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_button"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_xsmall"
             android:layout_marginBottom="@dimen/margin_small"
-            android:padding="7dp"
+            android:padding="4dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_desc"
@@ -113,7 +120,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_minus"
             android:background="@drawable/round_button"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -126,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/margin_small_medium"
@@ -148,7 +155,7 @@
             android:src="@drawable/ic_action_add"
             android:background="@drawable/round_button"
             android:contentDescription="@string/increment"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -43,7 +43,6 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_marginTop="8dp"
-                android:text="@string/default_rating"
                 app:layout_constraintLeft_toLeftOf="@id/restaurant_name"
                 app:layout_constraintRight_toRightOf="@id/restaurant_name"
                 app:layout_constraintTop_toBottomOf="@id/restaurant_name"
@@ -78,4 +77,5 @@
             app:layout_constraintTop_toBottomOf="@id/numReviews"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

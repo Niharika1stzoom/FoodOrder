@@ -2,6 +2,7 @@ package com.zoom.happiestplaces.order;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,6 +14,8 @@ import androidx.work.WorkManager;
 import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.model.Order;
 import com.zoom.happiestplaces.model.response.OrderResponse;
+import com.zoom.happiestplaces.util.AppConstants;
+import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.NotificationUtils;
 import com.zoom.happiestplaces.util.OrderUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
@@ -50,7 +53,6 @@ public class OrderViewModel extends AndroidViewModel{
         addCustomerToOrder();
         orderRepository.placeOrder(mOrderLiveData,
                 SharedPrefUtils.getOrder(mContext));
-        //OrderUtils.sendSms(mContext, SharedPrefUtils.getOrder(mContext));
         return mOrderLiveData ;
     }
 
@@ -82,17 +84,20 @@ public class OrderViewModel extends AndroidViewModel{
     public Order getCurrentOrder() {
         return SharedPrefUtils.getOrder(mContext);
     }
-    public void scheduleNotification(UUID orderId,String restaurant)
+
+        public void scheduleNotification(UUID orderId,UUID restaurantID,String restaurant)
     {
+        if(getCustomer()==null)
+            return;
         mWorkManager=WorkManager.getInstance(mContext);
+        //TODO:if notification is on
         OneTimeWorkRequest schedulerWorkRequest =
                 new OneTimeWorkRequest.Builder(ScheduleReviewWorker.class)
                         .setInitialDelay(NotificationUtils.NOTIFICATION_MIN, TimeUnit.MINUTES)
-                        .setInputData(OrderUtils.getNotificationData(orderId,restaurant))
+                        .setInputData(OrderUtils.getNotificationData(orderId, restaurantID,restaurant))
                         .build();
         mWorkManager.enqueue(
                 schedulerWorkRequest);
-
     }
 
     public LiveData<Customer> addCustomer(Customer customer) {
@@ -101,20 +106,17 @@ public class OrderViewModel extends AndroidViewModel{
     }
 
     public void saveCustomer(Customer customer) {
-
-        //add customer in place order to the
         orderRepository.saveCustomer(mContext,customer);
-    }
+        }
 
-    public LiveData<Customer> getRedeemPoints(UUID id) {
-        orderRepository.getCustomer(id,mCustomerLiveData);
+    public LiveData<Customer> getRedeemPoints(Customer customer) {
+        orderRepository.addCustomer(customer,mCustomerLiveData);
         return mCustomerLiveData;
     }
 
     public Customer getCustomer() {
         return orderRepository.getCustomer(mContext);
     }
-
     public void delCustomer() {
         orderRepository.delCustomer(mContext);
     }

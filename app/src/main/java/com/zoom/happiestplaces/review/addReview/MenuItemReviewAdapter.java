@@ -39,7 +39,6 @@ public class MenuItemReviewAdapter extends RecyclerView.Adapter<MenuItemReviewAd
         MenuItem foodMenuItem =mFoodMenuList.get(position);
         holder.bind(foodMenuItem);
     }
-
     @Override
     public int getItemCount() {
         if (mFoodMenuList == null) {
@@ -51,8 +50,6 @@ public class MenuItemReviewAdapter extends RecyclerView.Adapter<MenuItemReviewAd
         mFoodMenuList = FoodMenuList;
         notifyDataSetChanged();
     }
-
-
     public class MenuItemReviewViewHolder extends RecyclerView.ViewHolder  {
         private ListItemMenuReviewBinding mBinding;
         public MenuItemReviewViewHolder(@NonNull ListItemMenuReviewBinding binding) {
@@ -71,14 +68,9 @@ public class MenuItemReviewAdapter extends RecyclerView.Adapter<MenuItemReviewAd
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                     //adds or updates
-                    repository.addReviewMenuItem(FoodMenu.getId(),v);
-                }
+                    repository.addReviewMenuItem(FoodMenu.getId(),v); }
             });
-
         }
-
-
-
     }
 }
 

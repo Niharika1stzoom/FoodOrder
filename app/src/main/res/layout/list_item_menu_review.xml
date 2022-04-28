@@ -51,11 +51,8 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:layout_marginRight="-40dp"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            app:layout_constraintLeft_toRightOf="@id/item_name"
             app:layout_constraintTop_toTopOf="@id/item_img"
             app:layout_constraintBottom_toBottomOf="@+id/item_img"
             app:layout_constraintRight_toRightOf="parent"/>

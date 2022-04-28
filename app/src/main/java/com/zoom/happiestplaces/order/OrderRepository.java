@@ -28,41 +28,36 @@ public class OrderRepository {
         mApiInterface = apiInterface;
     }
 
-    public void getOrder(MutableLiveData<Order> liveData, UUID order_id) {
-        //pass order id here
-        Call<Order> call = mApiInterface.getOrder();
-        call.enqueue(new Callback<Order>() {
+    public void getOrder(MutableLiveData<OrderResponse> liveData, UUID order_id) {
+        Call<OrderResponse> call = mApiInterface.getOrder(order_id);
+        call.enqueue(new Callback<OrderResponse>() {
             @Override
-            public void onResponse(@NonNull Call<Order> call,
-                                   @NonNull Response<Order> response) {
+            public void onResponse(@NonNull Call<OrderResponse> call,
+                                   @NonNull Response<OrderResponse> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
                 } else {
                     liveData.postValue(null);
-                    Log.d(AppConstants.TAG,"Not success"+response.message());
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<Order> call, @NonNull Throwable t) {
-                Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
+            public void onFailure(@NonNull Call<OrderResponse> call, @NonNull Throwable t) {
+                Log.d(AppConstants.TAG,"Failure order"+t.getLocalizedMessage());
                 liveData.postValue(null);
             }
         });
     }
 
     public void addCustomer(Customer customer, MutableLiveData<Customer> liveData) {
-        getCustomer(UUID.fromString("2c7d0322-c45f-49fa-aeea-65855aba5319"),liveData);
-      /*  Call<Customer> call = mApiInterface.postCustomer(customer);
+        Call<Customer> call = mApiInterface.postCustomer(customer);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(@NonNull Call<Customer> call,
                                    @NonNull Response<Customer> response) {
                 if (response.isSuccessful()) {
-                    //for testing as there is no api
-                    liveData.postValue(customer);
+                    liveData.postValue(response.body());
                 } else {
                     liveData.postValue(null);
-                    Log.d(AppConstants.TAG,"Not success"+response.message());
                 }
             }
             @Override
@@ -70,7 +65,7 @@ public class OrderRepository {
                Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
                 liveData.postValue(null);
             }
-        });*/
+        });
     }
     public void getCustomer(UUID id, MutableLiveData<Customer> liveData) {
         //pass id
@@ -81,12 +76,11 @@ public class OrderRepository {
                                    @NonNull Response<Customer> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
-                    Log.d(AppConstants.TAG,"Success"+response.body());
                 } else {
                     liveData.postValue(null);
-                    Log.d(AppConstants.TAG,"Not success"+response.message());
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<Customer> call, @NonNull Throwable t) {
                 Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
@@ -108,14 +102,6 @@ public class OrderRepository {
     }
 
     public void placeOrder(MutableLiveData<OrderResponse> liveData,Order order) {
-       /* List<OrderMenuItem> list=new ArrayList<>();
-        for(MenuItem menuItem: menuList)
-        {
-            OrderMenuItem item=new OrderMenuItem(menuItem.getId(), menuItem.getQty());
-            list.add(item);
-            Log.d(AppConstants.TAG,"Order item"+item.getDish_id()+item.getQty());
-        }*/
-        //CustomerOrder cOrder=new CustomerOrder(order.getTable(),null,order.getItemsList());
         Call<OrderResponse> call = mApiInterface.placeOrder(order);
         call.enqueue(new Callback<OrderResponse>() {
             @Override
@@ -123,10 +109,8 @@ public class OrderRepository {
                                    @NonNull Response<OrderResponse> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
-                    Log.d(AppConstants.TAG,"Success"+response.body().getTime().toString());
                 } else {
                     liveData.postValue(null);
-                    Log.d(AppConstants.TAG,"Not success"+response.message()+response.errorBody()+"/n"+response.code());
                 }
             }
             @Override
@@ -135,26 +119,6 @@ public class OrderRepository {
                 liveData.postValue(null);
             }
         });
-
-       /* Call<Order> call = mApiInterface.placeOrder(order);
-        call.enqueue(new Callback<Order>() {
-            @Override
-            public void onResponse(@NonNull Call<Order> call,
-                                   @NonNull Response<Order> response) {
-                if (response.isSuccessful()) {
-                    liveData.postValue(response.body());
-                    Log.d(AppConstants.TAG,"Success"+response.body().foodItemsList.size()+response.body().getId());
-                } else {
-                    liveData.postValue(null);
-                    Log.d(AppConstants.TAG,"Not success"+response.message());
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<Order> call, @NonNull Throwable t) {
-                Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
-                liveData.postValue(null);
-            }
-        });*/
     }
 }
 

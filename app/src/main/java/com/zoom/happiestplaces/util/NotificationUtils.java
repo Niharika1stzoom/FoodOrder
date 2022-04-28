@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -49,7 +50,8 @@ public class NotificationUtils {
         notificationManager.cancelAll();
     }
 
-    public static void remindUserReview(Context context, UUID orderId, String restaurant) {
+    public static void remindUserReview(Context context, UUID orderId, UUID restID,String restaurant) {
+        Log.d(AppConstants.TAG,"In remind user ");
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -68,7 +70,8 @@ public class NotificationUtils {
                         .setGroup(GROUP_KEY_REVIEW_NOTIFICATION)
                 .setContentTitle(new String(Character.toChars(unicode))+" "+context.getString(R.string.notification_content_title))
                 .setContentText(restaurant+" - How was the food?")
-                        .setDefaults(Notification.DEFAULT_VIBRATE).setContentIntent(contentIntent(context,orderId))
+                        .setDefaults(Notification.DEFAULT_VIBRATE).
+                        setContentIntent(contentIntent(context,orderId,restID))
                 .setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
@@ -76,15 +79,16 @@ public class NotificationUtils {
             notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
         notificationManager.notify(new Random().nextInt() , notificationBuilder.build());
+        Log.d(AppConstants.TAG,"Notification sent ");
     }
 
 
-    private static PendingIntent contentIntent(Context context, UUID orderId) {
+    private static PendingIntent contentIntent(Context context, UUID orderId,UUID restId) {
         //Intent startActivityIntent = new Intent(context, MainActivity.class);
         PendingIntent startActivityIntent = new NavDeepLinkBuilder(context)
                 .setGraph(R.navigation.nav_graph)
                 .setDestination(R.id.addReviewFragment)
-                .setArguments(OrderUtils.getOrderIDBundle(orderId))
+                .setArguments(OrderUtils.getOrderRestoBundle(orderId,restId))
                 .createPendingIntent();
             return startActivityIntent;
         //startActivityIntent.putExtra(AppConstants.KEY_ORDER_ID, orderId);

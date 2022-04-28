@@ -118,7 +118,6 @@ public class ScanFragment extends Fragment {
         return true;
     }
     private void startCamera() {
-
         cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
         mAnalyzer=new MyImageAnalyzer();
         cameraProviderFuture.addListener(new Runnable() {
@@ -207,9 +206,7 @@ public class ScanFragment extends Fragment {
             for (Barcode barcode: barcodes) {
                 Rect bounds = barcode.getBoundingBox();
                 Point[] corners = barcode.getCornerPoints();
-
                 String rawValue = barcode.getRawValue();
-
                 int valueType = barcode.getValueType();
                 // See API reference for complete list of supported types
                 switch (valueType) {
@@ -224,15 +221,18 @@ public class ScanFragment extends Fragment {
     }
 
     private void showRestaurantMenu(String QRcode) {
-        //TODO:if the qr code is wrong
-        Log.d(AppConstants.TAG,"Qr code "+QRcode.toString());
-        NavHostFragment.findNavController(this).navigate(R.id.foodMenuFragment,
+        try{
+            UUID mQRcode = UUID.fromString(QRcode);
+            SharedPrefUtils.createOrder(getActivity().getApplicationContext(),mQRcode);
+        } catch (IllegalArgumentException exception){
+            // Toast.makeText(getContext(),getString(R.string.wrongQR),Toast.LENGTH_SHORT).show();
+        }
+        NavHostFragment.findNavController(getParentFragment()).navigate(R.id.foodMenuFragment,
                 RestaurantUtils.getQRBundle(QRcode)
         );
        /* if (QRUtils.checkQRFormat(QRcode))
         {
-
-            mViewModel.getRestaurant(QRUtils.getRestaurantIdQR(QRcode)).observe(
+        mViewModel.getRestaurant(QRUtils.getRestaurantIdQR(QRcode)).observe(
                     this, restaurant -> {
                 if(restaurant==null) {
                     if(!AppUtils.isNetworkAvailableAndConnected(getContext()))

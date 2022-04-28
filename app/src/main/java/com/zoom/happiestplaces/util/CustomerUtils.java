@@ -5,11 +5,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public class CustomerUtils {
     public static Customer getCustomerAccount(GoogleSignInAccount account) {
-        String url="";
-        if(account.getPhotoUrl()!=null)
-         url=account.getPhotoUrl().getPath();
+        String s="";
+        if(account.getPhotoUrl()!=null )
+        {
+            s=account.getPhotoUrl().toString();
+        }
         Customer customer= new Customer(account.getDisplayName(),
-                account.getEmail(),account.getId(), url);
+                account.getEmail(),account.getId(), s);
         customer.setCurrent_pts(AppConstants.NEW_USER_POINTS);
         return customer;
     }

@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.zoom.happiestplaces.model.Order;
+import com.zoom.happiestplaces.model.Restaurant;
+import com.zoom.happiestplaces.model.response.OrderResponse;
 import com.zoom.happiestplaces.order.OrderRepository;
 import com.zoom.happiestplaces.review.ReviewRepository;
 
@@ -23,21 +25,21 @@ public class AddReviewViewModel extends AndroidViewModel {
     ReviewRepository reviewRepo;
     @Inject
     OrderRepository orderRepo;
-    MutableLiveData<Order> orderLiveData;
+    MutableLiveData<Restaurant> restaurantLiveData;
+    MutableLiveData<OrderResponse> orderLiveData;
 
     @Inject
     public AddReviewViewModel(@NonNull Application application) {
         super(application);
         orderLiveData=new MutableLiveData<>();
+        restaurantLiveData=new MutableLiveData<>();
     }
-
-    public LiveData<Order> getOrder(UUID order_id) {
+    public LiveData<OrderResponse> getOrder(UUID order_id) {
         orderRepo.getOrder(orderLiveData,order_id);
         return orderLiveData;
     }
 
-
-    public void startReview(Order order) {
+    public void startReview(OrderResponse order) {
         reviewRepo.startReview(order);
     }
 
@@ -55,5 +57,14 @@ public class AddReviewViewModel extends AndroidViewModel {
 
     public String getOrderTime() {
         return reviewRepo.getOrderTime();
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+    reviewRepo.setRestaurant(restaurant);
+    }
+
+    public LiveData<Restaurant> getRestaurant(UUID restaurantId) {
+        reviewRepo.getRestaurant(restaurantId,restaurantLiveData);
+        return restaurantLiveData;
     }
 }

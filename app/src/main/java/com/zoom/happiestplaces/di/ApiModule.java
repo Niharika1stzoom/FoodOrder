@@ -18,8 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 @InstallIn(SingletonComponent.class)
 public class ApiModule {
-    String baseURL = "https://happiestplace.herokuapp.com/api/";
-    //String baseURL="https://mocki.io/v1/";
+    String baseURL = "  https://restaurants.happiestplaces.com/api/";
+    //String baseURL="http://20.106.72.196/api/";
     @Singleton
     @Provides
     public RestaurantApi getRestApiInterface(Retrofit retrofit) {

@@ -13,6 +13,7 @@ import java.util.List;
 import com.zoom.happiestplaces.databinding.ListItemOrderBinding;
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.OrderMenuItem;
+import com.zoom.happiestplaces.util.AppConstants;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     ListItemOrderBinding mBinding;
@@ -60,8 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             if(menuItem.getQty()!=0)
                 mBinding.itemQty.setText(" X  "+Integer.toString(menuItem.getQty()));
             Double total=menuItem.getQty()*menuItem.getPrice();
-            mBinding.totalItemValue.setText("Rs "+Double.toString(total));
-            //mBinding.qtyLabel.setText(Integer.toString(cartItem.getQty()));
+            mBinding.totalItemValue.setText(AppConstants.CURRENCY+" "+Double.toString(total));
             }
 
             @Override

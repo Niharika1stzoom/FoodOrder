@@ -5,6 +5,7 @@ import com.zoom.happiestplaces.model.MenuItem;
 
 import java.util.UUID;
 
+//Used to get order dish response after placing order
 public class OrderDishResponse {
     UUID id;
     int qty;

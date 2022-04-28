@@ -10,6 +10,7 @@ import androidx.work.Data;
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.Order;
+import com.zoom.happiestplaces.model.Restaurant;
 
 
 import java.util.List;
@@ -19,19 +20,7 @@ public class OrderUtils {
     public static final String ARG_ORDER = "order" ;
     public static final String ARG_ORDER_ID = "order_id";
 
-    public static boolean sendSms(Context context, Order order) {
-        String phone_Num = order.getRestaurant().getPhoneNum();
-       String send_msg =OrderUtils.getSmsMsg(context);
-       try {
-            SmsManager sms = SmsManager.getDefault();
-           // sms.sendTextMessage(phone_Num, null, send_msg, null, null); // adding number and text
-        } catch (Exception e) {
-            Toast.makeText(context, "Your order is not placed.Unable to send order msg."+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-            return false;
-       }
-        return true;
-    }
+
     public  static Bundle getOrderBundle(Order order){
         Bundle bundle=new Bundle();
         bundle.putSerializable(ARG_ORDER,order);
@@ -50,10 +39,11 @@ public class OrderUtils {
 
     }
 
-    public static Data getNotificationData(UUID orderId, String restaurant) {
+    public static Data getNotificationData(UUID orderId, UUID restaurantID,String restaurant) {
         return new Data.Builder()
                 .putString(AppConstants.KEY_ORDER_ID, String.valueOf(orderId))
-                .putString(AppConstants.KEY_RESTAURANT_NAME,restaurant)
+                .putString(AppConstants.KEY_RESTAURANT_ID, String.valueOf(restaurantID))
+                .putString(AppConstants.KEY_RESTAURANT_NAME, String.valueOf(restaurant))
                 .build();
 
     }
@@ -61,6 +51,12 @@ public class OrderUtils {
     public static Bundle getOrderIDBundle(UUID orderId) {
         Bundle bundle=new Bundle();
         bundle.putString(ARG_ORDER_ID, String.valueOf(orderId));
+        return bundle;
+    }
+    public static Bundle getOrderRestoBundle(UUID orderId, UUID restId) {
+        Bundle bundle=new Bundle();
+        bundle.putString(AppConstants.KEY_ORDER_ID, String.valueOf(orderId));
+        bundle.putString(AppConstants.KEY_RESTAURANT_ID, String.valueOf(restId));
         return bundle;
     }
 }

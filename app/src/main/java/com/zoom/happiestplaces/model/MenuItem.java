@@ -12,6 +12,7 @@ public class MenuItem implements Serializable {
     private String imageUrl;
     private String description;
     private Double price;
+    Ratings ratings;
 
 
     public MenuItem(UUID id, String name, String imageUrl, String description, Double price) {
@@ -41,5 +42,9 @@ public class MenuItem implements Serializable {
 
     public Double getPrice() {
         return price;
+    }
+
+    public Ratings getRatings() {
+        return ratings;
     }
 }

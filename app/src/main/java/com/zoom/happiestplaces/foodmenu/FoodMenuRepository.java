@@ -25,7 +25,6 @@ public class FoodMenuRepository {
     }
 
     public void getMenuList(MutableLiveData<Restaurant> liveData, UUID tableId) {
-        //Call<List<MenuItem>> call = mApiInterface.getMenu();
         Call<Restaurant> call = mApiInterface.getRestaurantDishes(tableId);
         call.enqueue(new Callback<Restaurant>() {
             @Override
@@ -33,12 +32,15 @@ public class FoodMenuRepository {
                                    @NonNull Response<Restaurant> response) {
                 if (response.isSuccessful()) {
                     liveData.postValue(response.body());
+
                 } else {
                     liveData.postValue(null);
+                    Log.d(AppConstants.TAG,"Food menu Error"+ response.code());
                 }
             }
             @Override
             public void onFailure(@NonNull Call<Restaurant> call, @NonNull Throwable t) {
+                Log.d(AppConstants.TAG,"Food menu Failure"+t.getLocalizedMessage());
                 liveData.postValue(null);
             }
         });
@@ -46,7 +48,7 @@ public class FoodMenuRepository {
 
     public void getRestaurant(UUID restaurantId, MutableLiveData<Restaurant> liveData) {
         //pass restId
-        Call<Restaurant> call = mApiInterface.getRestaurant();
+        Call<Restaurant> call = mApiInterface.getRestaurant(restaurantId);
         call.enqueue(new Callback<Restaurant>() {
             @Override
             public void onResponse(@NonNull Call<Restaurant> call,

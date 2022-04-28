@@ -12,15 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zoom.happiestplaces.databinding.ListItemDisplayReviewBinding;
 import com.zoom.happiestplaces.databinding.ListItemMenuReviewBinding;
 import com.zoom.happiestplaces.model.RestaurantReview;
+import com.zoom.happiestplaces.model.response.ReviewDataResponse;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.DateUtil;
+import com.zoom.happiestplaces.util.ReviewUtils;
 
 import java.util.List;
 
 public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdapter.DisplayReviewViewHolder> {
     ListItemDisplayReviewBinding mBinding;
     Context mContext;
-    private List<RestaurantReview> mReviewList;
+    private List<ReviewDataResponse> mReviewList;
     public DisplayReviewAdapter(Context context) {
         mContext = context;
     }
@@ -31,13 +33,11 @@ public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdap
         mBinding=ListItemDisplayReviewBinding.inflate(LayoutInflater.from(mContext),parent,false);
         return new DisplayReviewViewHolder(mBinding);
     }
-
     @Override
     public void onBindViewHolder(@NonNull DisplayReviewViewHolder holder, int position) {
-        RestaurantReview review =mReviewList.get(position);
+        ReviewDataResponse review =mReviewList.get(position);
         holder.bind(review);
     }
-
     @Override
     public int getItemCount() {
         if (mReviewList == null) {
@@ -45,7 +45,7 @@ public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdap
         }
         return mReviewList.size();
     }
-    public void setList(List<RestaurantReview> reviewList) {
+    public void setList(List<ReviewDataResponse> reviewList) {
         mReviewList = reviewList;
         notifyDataSetChanged();
     }
@@ -57,7 +57,7 @@ public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdap
             super(binding.getRoot());
             mBinding=binding;
         }
-        public void bind(RestaurantReview review) {
+        public void bind(ReviewDataResponse review) {
             if(review.getCustomer()!=null) {
                 if (review.getCustomer().getName() != null ||
                         !TextUtils.isEmpty(review.getCustomer().getName()))
@@ -66,19 +66,18 @@ public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdap
                     AppUtils.setImage(mContext, review.getCustomer().getPhotoURL(),
                             mBinding.itemProfileImg);
             }
-
-                mBinding.ratingBarReview.setRating(review.getNum_of_stars());
-            mBinding.itemRating.setText(Float.toString(review.getNum_of_stars()));
-            if(!TextUtils.isEmpty(review.getTextReview()))
-                mBinding.reviewText.setText(review.getTextReview());
+                if(review.getRating()!=null) {
+                    mBinding.ratingBarReview.setRating(review.getRating());
+                    mBinding.itemRating.setText(ReviewUtils.getRatingStringFormat(review.getRating()));
+                }
+            if(!TextUtils.isEmpty(review.getText()))
+                mBinding.reviewText.setText(review.getText());
             else
                 mBinding.reviewText.setVisibility(View.GONE);
-            if(review.getTime()!=null){
-                mBinding.time.setText(DateUtil.getDisplayReviewDateFormat(review.getTime()));
+            if(review.getDate()!=null){
+                mBinding.time.setText(DateUtil.getReviewOrderDateFormat(review.getDate()));
             }
 
         }
     }
 }
-
-

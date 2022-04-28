@@ -71,11 +71,13 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
             if(FoodMenu.getDescription()!=null)
                 mBinding.itemDesc.setText(FoodMenu.getDescription());
             if(FoodMenu.getPrice()!=null)
-                mBinding.itemPrice.setText("Rs "+FoodMenu.getPrice().toString());
+                mBinding.itemPrice.setText(AppConstants.CURRENCY+" "+FoodMenu.getPrice().toString());
+            mBinding.ratingBar.setRating(FoodMenu.getRatings().getRating());
             if (FoodMenu.getImageUrl()!= null)
-                AppUtils.setImage(mContext, AppUtils.get_absolute_url(AppConstants.BASE_URL,FoodMenu.getImageUrl()),
+                AppUtils.setImage(mContext,
+                        FoodMenu.getImageUrl(),
                         mBinding.itemProfileImg);
-           OrderMenuItem cartItem=SharedPrefUtils.containsItem(mContext,FoodMenu.getId());
+            OrderMenuItem cartItem=SharedPrefUtils.containsItem(mContext,FoodMenu.getId());
             if(cartItem!=null) {
                 mBinding.addButton.setVisibility(View.GONE);
                 mBinding.qtyButtonGroup.setVisibility(View.VISIBLE);
@@ -84,7 +86,6 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
             else{
                 mBinding.addButton.setVisibility(View.VISIBLE);
                 mBinding.qtyButtonGroup.setVisibility(View.GONE);
-                //mBinding.qtyLabel.setText(Integer.toString(cartItem.getQty()));
             }
 
         }
@@ -94,7 +95,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
             {
                 mBinding.addButton.setVisibility(View.GONE);
                 mBinding.qtyButtonGroup.setVisibility(View.VISIBLE);
-                SharedPrefUtils.addItem(mContext,mFoodMenuList.get(getAdapterPosition()));
+                SharedPrefUtils.addItem(mContext,
+                        mFoodMenuList.get(getAdapterPosition()));
                 notifyItemChanged(getAdapterPosition());
             }
             if(view.getId()==mBinding.addQty.getId())
@@ -108,12 +110,12 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMe
                 notifyItemChanged(getAdapterPosition());
                 //remove
             }
-            if(view.getId()==mBinding.btnShare.getId())
+           /* if(view.getId()==mBinding.btnShare.getId())
             {
                 AppUtils.shareFoodMenu(mContext,mFoodMenuList.get(getAdapterPosition()));
             }
             else
-                viewFoodMenu(mFoodMenuList.get(getAdapterPosition()));
+                viewFoodMenu(mFoodMenuList.get(getAdapterPosition()));*/
         }
         private void viewFoodMenu(MenuItem FoodMenu) {
            /* Intent browserIntent = new Intent(Intent.ACTION_VIEW,

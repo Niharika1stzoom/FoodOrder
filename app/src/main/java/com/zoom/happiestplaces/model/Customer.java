@@ -1,30 +1,39 @@
 package com.zoom.happiestplaces.model;
 
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
 
 public class Customer {
     UUID id;
     String name;
+    @SerializedName("email")
     String emailId;
     String credentials;
+    @SerializedName("current_points")
     double current_pts;
     int lifetime_pts;
     String photoURL;
-    String phone,address;
+    String phone;
+    Address address;
 
     public Customer(String name, String emailId, String credentials,String photoURL) {
-        id=UUID.randomUUID();
         this.name = name;
         this.emailId = emailId;
         this.credentials = credentials;
         this.photoURL=photoURL;
     }
 
+    public Customer(String emailId) {
+        this.emailId=emailId;
+    }
+
     public String getPhone() {
         return phone;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -64,7 +73,15 @@ public class Customer {
         return lifetime_pts;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }

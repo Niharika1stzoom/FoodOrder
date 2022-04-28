@@ -13,8 +13,6 @@ import com.zoom.happiestplaces.model.MenuItem;
 import com.google.android.material.snackbar.Snackbar;
 
 public class AppUtils {
-
-
     public static void setImage(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)

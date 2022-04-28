@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.mlkit.common.sdkinternal.SharedPrefManager;
 import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.Order;
@@ -33,52 +34,48 @@ public class SharedPrefUtils {
         return GsonUtils.getModelObject(order) ;
     }
     synchronized public static void createOrder(Context context, UUID table, Restaurant restaurant) {
-      //  Order order=new Order(new Restaurant(
-      //          table,AppConstants.RESTAURANT_NUM,AppConstants.RESTAURANT_NAME));
         Order order=new Order(table,restaurant);
         SharedPrefUtils.setOrder(context,order);
     }
     synchronized public static void createOrder(Context context, UUID table) {
-        //  Order order=new Order(new Restaurant(
-        //          table,AppConstants.RESTAURANT_NUM,AppConstants.RESTAURANT_NAME));
         Order order=new Order(table);
         SharedPrefUtils.setOrder(context,order);
     }
     synchronized public static void setRestaurant(Context context, Restaurant restaurant) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.setRestaurant(restaurant);
         SharedPrefUtils.setOrder(context,order);
     }
 
     synchronized public static void addItem(Context context, MenuItem item) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.addMenuItem(item);
         SharedPrefUtils.setOrder(context,order);
     }
 
     synchronized public static void incrementQty(Context context, MenuItem item) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.incrementQty(item.getId());
         SharedPrefUtils.setOrder(context,order);
     }
     synchronized public static void decrementQty(Context context, MenuItem item) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.decrementQty(item.getId());
         SharedPrefUtils.setOrder(context,order);
     }
     synchronized public static void removeItem(Context context, MenuItem item) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.removeMenuItem(item.getId());
         SharedPrefUtils.setOrder(context,order);
     }
 
     public static OrderMenuItem containsItem(Context context, UUID id) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         return order.getMenuItem(id);
     }
 
     synchronized public static void cancelOrder(Context context) {
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
         order.cancelOrder();
         order.setOrderExecuted(false);
         SharedPrefUtils.setOrder(context,order);
@@ -91,7 +88,7 @@ public class SharedPrefUtils {
     }
 
     public static Double showTotal(Context context) {
-       ;
+
        /* List<MenuItem>menuItems =getListView(context);
         Double total=0.0;
         for(MenuItem item:menuItems)
@@ -102,10 +99,8 @@ public class SharedPrefUtils {
     }
 
     public static boolean checkOrderIsEmpty(Context context) {
-        Order order=getOrder(context);
-        return order.getItemsList().isEmpty();
-
-
+        Order order=SharedPrefUtils.getOrder(context);
+        return order.isOrderEmpty();
     }
 
     public static boolean checkOrderExecuted(Context context) {
@@ -130,8 +125,6 @@ public class SharedPrefUtils {
     public static Customer getCustomer(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String customer = prefs.getString(KEY_CUSTOMER, "");
-        Log.d(AppConstants.TAG,"Getting customer "+customer);
-
         if(TextUtils.isEmpty(customer))
             return null;
         else
@@ -143,7 +136,6 @@ public class SharedPrefUtils {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(KEY_CUSTOMER);
         editor.apply();
-        Log.d(AppConstants.TAG,"Del customer....");
     }
 
     public static void addCustomerOrder(Context context) {
@@ -151,7 +143,7 @@ public class SharedPrefUtils {
         Customer customer=SharedPrefUtils.getCustomer(context);
         if(customer==null)
             return;
-        Order order=getOrder(context);
+        Order order=SharedPrefUtils.getOrder(context);
                order.setCustomer(customer);
                order.setCustomerId(customer.getId());
                SharedPrefUtils.setOrder(context,order);

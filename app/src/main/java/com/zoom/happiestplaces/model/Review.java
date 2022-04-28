@@ -1,14 +1,16 @@
 package com.zoom.happiestplaces.model;
 
+import com.zoom.happiestplaces.model.response.OrderResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Review {
-    Order order;
+    OrderResponse order;
     List<MenuItemReview> reviewItems;
     RestaurantReview restaurantReview;
-    public void setOrder(Order order) {
+    public void setOrder(OrderResponse order) {
         this.order = order;
     }
 
@@ -22,7 +24,7 @@ public class Review {
         reviewItems=new ArrayList<>();
     }
 
-    public Order getOrder() {
+    public OrderResponse getOrder() {
         return order;
     }
 
