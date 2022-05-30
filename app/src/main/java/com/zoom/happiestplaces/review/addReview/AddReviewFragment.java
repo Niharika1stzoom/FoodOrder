@@ -29,7 +29,7 @@ import java.util.UUID;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-//It receives input of order Id to function
+//It receives input of order Id and restaurant Id to function
 @AndroidEntryPoint
 public class AddReviewFragment extends Fragment {
     private AddReviewFragmentBinding mBinding;

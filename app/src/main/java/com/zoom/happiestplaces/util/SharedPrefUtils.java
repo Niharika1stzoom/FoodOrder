@@ -4,23 +4,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.google.mlkit.common.sdkinternal.SharedPrefManager;
 import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.Order;
 import com.zoom.happiestplaces.model.OrderMenuItem;
 import com.zoom.happiestplaces.model.Restaurant;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 public class SharedPrefUtils {
     public static final String KEY_ORDER = "current_order";
     private static final String KEY_CUSTOMER ="customer" ;
+    private static final String KEY_FCM_TOKEN = "fcm_token";
+    private static final String KEY_BLUETOOTH_ADDRESS = "address";
+    private static final String KEY_REFERRAL = "referral";
+    private static final String KEY_FIRST_USER = "first_time_user";
 
     synchronized private static void setOrder(Context context, Order order) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -46,6 +46,7 @@ public class SharedPrefUtils {
         order.setRestaurant(restaurant);
         SharedPrefUtils.setOrder(context,order);
     }
+
 
     synchronized public static void addItem(Context context, MenuItem item) {
         Order order=SharedPrefUtils.getOrder(context);
@@ -74,6 +75,11 @@ public class SharedPrefUtils {
         return order.getMenuItem(id);
     }
 
+    synchronized public static void addRedeemPoints(Context context, Double points) {
+        Order order=SharedPrefUtils.getOrder(context);
+        order.setRedeem_points(points);
+        SharedPrefUtils.setOrder(context,order);
+    }
     synchronized public static void cancelOrder(Context context) {
         Order order=SharedPrefUtils.getOrder(context);
         order.cancelOrder();
@@ -147,5 +153,39 @@ public class SharedPrefUtils {
                order.setCustomer(customer);
                order.setCustomerId(customer.getId());
                SharedPrefUtils.setOrder(context,order);
+    }
+
+    public synchronized static void saveFcmToken(Context context,String token) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_FCM_TOKEN,token);
+        editor.apply();
+    }
+    public synchronized static String getFcmToken(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String token=prefs.getString(KEY_FCM_TOKEN,"");
+       return token;
+    }
+
+    public static void saveReferral(Context context, String custID) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_REFERRAL,custID);
+        editor.apply();
+    }
+    public synchronized static String getReferral(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String referral=prefs.getString(KEY_REFERRAL,"");
+        return referral;
+    }
+    public static void setFirstTimeUser(Context context, boolean b) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(KEY_FIRST_USER,b);
+        editor.apply();
+    }
+    public synchronized static Boolean getFirstTimeUser(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(KEY_FIRST_USER,false);
     }
 }

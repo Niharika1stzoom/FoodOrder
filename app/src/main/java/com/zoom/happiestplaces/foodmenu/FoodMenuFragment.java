@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.FoodMenuFragmentBinding;
 import com.zoom.happiestplaces.model.MenuItem;
+import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.RestaurantUtils;
 import com.zoom.happiestplaces.util.ReviewUtils;
@@ -45,6 +48,7 @@ public class FoodMenuFragment extends Fragment {
                     mQRcode = UUID.fromString(getArguments().getString(RestaurantUtils.ARG_QRCode_ID));
                 } catch (IllegalArgumentException exception) {
                     // Toast.makeText(getContext(),getString(R.string.wrongQR),Toast.LENGTH_SHORT).show();
+                    AppUtils.showSnackbar(getParentFragment().getView(),getString(R.string.wrongQR));
                     scanAgain();
                 }
                 //SharedPrefUtils.createOrder(getActivity().getApplicationContext(),mQRcode);
@@ -83,6 +87,8 @@ public class FoodMenuFragment extends Fragment {
             SharedPrefUtils.cancelOrder(getActivity().getApplicationContext());
         }
     }
+
+
 
     private void initRecyclerView() {
         mBinding.recyclerView.setLayoutManager(

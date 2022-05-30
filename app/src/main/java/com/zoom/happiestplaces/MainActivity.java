@@ -1,6 +1,8 @@
 package com.zoom.happiestplaces;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,10 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.zoom.happiestplaces.databinding.ActivityMainBinding;
+import com.zoom.happiestplaces.util.AppConstants;
+import com.zoom.happiestplaces.util.OrderUtils;
+
+import java.util.UUID;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -35,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
     }
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
+
+
+   @Override
+   public boolean onSupportNavigateUp() {
+       NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+       return NavigationUI.navigateUp(navController, appBarConfiguration)
+               || super.onSupportNavigateUp();
+   }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -48,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
         {
 
             navController.navigate(R.id.settingsFragment);
+            return true;
+        }
+        if(item.getItemId()==R.id.intro)
+        {
+
+            navController.navigate(R.id.introViewPagerFragment);
             return true;
         }
         return NavigationUI.onNavDestinationSelected(item, navController)

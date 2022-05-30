@@ -14,17 +14,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
@@ -32,10 +38,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.messaging.RemoteMessage;
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.ScanFragmentBinding;
 import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
+import com.zoom.happiestplaces.util.OrderUtils;
 import com.zoom.happiestplaces.util.QRUtils;
 import com.zoom.happiestplaces.util.RestaurantUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
@@ -68,19 +78,92 @@ public class ScanFragment extends Fragment {
     PreviewView mPreviewView;
     private int REQUEST_CODE_PERMISSIONS = 1001;
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA"};
+    Boolean scanned;
 
-    public static ScanFragment newInstance() {
-        return new ScanFragment();
-    }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+       if(!SharedPrefUtils.getFirstTimeUser(getActivity().getApplicationContext())) {
+         SharedPrefUtils.setFirstTimeUser(getActivity().getApplicationContext(),true);
+           NavHostFragment.findNavController(getParentFragment()).navigate(R.id.introViewPagerFragment);
+
+       }
+       else
+        onNewIntent();
+    }
+    //Handle Push notifications if the app is in background
+    public void onNewIntent() {
+        Intent intent = getActivity().getIntent();
+        Bundle bundle = intent.getExtras();
+        String str=intent.getDataString();
+        if (bundle != null) {
+            if (bundle.containsKey(AppConstants.KEY_ORDER_STATUS)) {
+                String status = bundle.getString(AppConstants.KEY_ORDER_STATUS);
+                if (status.equals(AppConstants.Status.Paid.toString())) {
+                    String orderId = bundle.getString(AppConstants.KEY_ORDER_ID);
+                    String restId = bundle.getString(AppConstants.KEY_RESTAURANT_ID);
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.addReviewFragment, OrderUtils.getOrderRestoBundle(UUID.fromString(orderId), UUID.fromString(restId)));
+                } else {
+                   // Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.customerOrdersFragment);
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.customerOrdersFragment);}
+                }
+            else
+                if(bundle.containsKey(AppConstants.KEY_CUSTOMER)){
+                    if(SharedPrefUtils.getCustomer(getActivity().getApplicationContext())!=null)
+                    {
+                        NavHostFragment.findNavController(getParentFragment()).navigate(R.id.profileFragment);
+                    }
+
+                }
+            }
+
+        FirebaseDynamicLinks.getInstance()
+                    .getDynamicLink(getActivity().getIntent())
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<PendingDynamicLinkData>() {
+                        @Override
+                        public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                            // Get deep link from result (may be null if no link is found)
+                            Uri deepLink = null;
+                            if (pendingDynamicLinkData != null) {
+                                deepLink = pendingDynamicLinkData.getLink();
+                                try {
+                                    String custID=deepLink.getQueryParameter(AppConstants.KEY_INVITED);
+                                    if(deepLink.getBooleanQueryParameter(
+                                            AppConstants.KEY_INVITED,false)) {
+                                        custID=deepLink.getQueryParameter(AppConstants.KEY_INVITED);
+                                        if(!TextUtils.isEmpty(custID)) {
+                                            SharedPrefUtils.saveReferral(getContext().getApplicationContext(),custID);
+                                            //mViewModel.saveReferral(custID);
+
+                                        }
+                                    }
+                                }catch (Exception e){
+                                    Log.d(AppConstants.TAG, " error "+e.toString());
+                                }
+                            }
+                        }
+                    })
+                    .addOnFailureListener(getActivity(), new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(AppConstants.TAG, "getDynamicLink:onFailure", e);
+                        }
+                    });
+
+    }
+
+
+        @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding=ScanFragmentBinding.inflate(inflater,container,false);
-        View view=mBinding.getRoot();
+        mBinding = ScanFragmentBinding.inflate(inflater, container, false);
+        View view = mBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(ScanViewModel.class);
-       mPreviewView= mBinding.previewView;
-     //   startCamera();
+        mPreviewView = mBinding.previewView;
+        mViewModel.getRegistrationToken();
+        //   startCamera();
         return view;
     }
 
@@ -96,6 +179,7 @@ public class ScanFragment extends Fragment {
             }
         }
     }
+
     private void initCamera() {
         if (allPermissionsGranted()) {
             startCamera(); //start camera if permission has been granted by user
@@ -103,11 +187,14 @@ public class ScanFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         initCamera();
+        scanned=false;
     }
+
     private boolean allPermissionsGranted() {//fn checks whether user has necessary permissions
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(getContext(), permission) !=
@@ -117,18 +204,18 @@ public class ScanFragment extends Fragment {
         }
         return true;
     }
+
     private void startCamera() {
         cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
-        mAnalyzer=new MyImageAnalyzer();
+        mAnalyzer = new MyImageAnalyzer();
         cameraProviderFuture.addListener(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if( ActivityCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.CAMERA)!= (PackageManager.PERMISSION_GRANTED))
-                    {
-                        ActivityCompat.requestPermissions(getActivity(),new String[]{
-                                Manifest.permission.CAMERA},101);
+                    if (ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.CAMERA) != (PackageManager.PERMISSION_GRANTED)) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{
+                                Manifest.permission.CAMERA}, 101);
                     }
                     ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                     bindPreview(cameraProvider);
@@ -141,6 +228,7 @@ public class ScanFragment extends Fragment {
             }
         }, ContextCompat.getMainExecutor(getContext()));
     }
+
     void bindPreview(@NonNull ProcessCameraProvider processCameraProvider) {
         Preview preview = new Preview.Builder()
                 .build();
@@ -150,25 +238,27 @@ public class ScanFragment extends Fragment {
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
-        ImageCapture imageCapture=new ImageCapture.Builder().build();
-        ImageAnalysis imageAnalysis=new ImageAnalysis.Builder()
-                .setTargetResolution(new Size(1280,728))
+        ImageCapture imageCapture = new ImageCapture.Builder().build();
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                .setTargetResolution(new Size(1280, 728))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
-        imageAnalysis.setAnalyzer(cameraExecutor,mAnalyzer);
+        imageAnalysis.setAnalyzer(cameraExecutor, mAnalyzer);
         processCameraProvider.unbindAll();
-        processCameraProvider.bindToLifecycle(this,cameraSelector,preview,imageCapture,imageAnalysis);
+        processCameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
     }
 
-    public class MyImageAnalyzer implements ImageAnalysis.Analyzer{
+    public class MyImageAnalyzer implements ImageAnalysis.Analyzer {
         private FragmentManager fragmentManager;
+
         @Override
         public void analyze(@NonNull ImageProxy image) {
             scanbarcode(image);
         }
-        private void scanbarcode(ImageProxy imageProxy){
-            @SuppressLint("UnsafeOptInUsageError") Image image1= imageProxy.getImage();
-            assert imageProxy!=null;
+
+        private void scanbarcode(ImageProxy imageProxy) {
+            @SuppressLint("UnsafeOptInUsageError") Image image1 = imageProxy.getImage();
+            assert imageProxy != null;
             InputImage inputImage =
                     InputImage.fromMediaImage(image1, imageProxy.getImageInfo().getRotationDegrees());
             // Pass image to an ML Kit Vision API
@@ -203,54 +293,48 @@ public class ScanFragment extends Fragment {
         }
 
         private void readBarcodeData(List<Barcode> barcodes) {
-            for (Barcode barcode: barcodes) {
+            for (Barcode barcode : barcodes) {
                 Rect bounds = barcode.getBoundingBox();
                 Point[] corners = barcode.getCornerPoints();
                 String rawValue = barcode.getRawValue();
                 int valueType = barcode.getValueType();
                 // See API reference for complete list of supported types
+                if(!scanned)
                 switch (valueType) {
                     case Barcode.TYPE_TEXT:
                         String table = barcode.getDisplayValue();
                         showRestaurantMenu(table);
                         break;
-                    default:AppUtils.showSnackbar(getView(),getString(R.string.wrongQR));
+                    case Barcode.TYPE_URL:
+                        String url = barcode.getDisplayValue();
+                        if(QRUtils.validateQRCODEURL(url))
+                            showRestaurantMenu(QRUtils.get_table_id(url));
+                        else
+                            AppUtils.showSnackbar(getParentFragment().getView(), getString(R.string.wrongQR));
+                        break;
+                    default:
+                        scanned=false;
+                        AppUtils.showSnackbar(getParentFragment().getView(), getString(R.string.wrongQR));
                 }
             }
         }
     }
 
     private void showRestaurantMenu(String QRcode) {
-        try{
+        scanned=true;
+        try {
             UUID mQRcode = UUID.fromString(QRcode);
-            SharedPrefUtils.createOrder(getActivity().getApplicationContext(),mQRcode);
-        } catch (IllegalArgumentException exception){
+            SharedPrefUtils.createOrder(getActivity().getApplicationContext(), mQRcode);
+        } catch (IllegalArgumentException exception) {
+
             // Toast.makeText(getContext(),getString(R.string.wrongQR),Toast.LENGTH_SHORT).show();
         }
         NavHostFragment.findNavController(getParentFragment()).navigate(R.id.foodMenuFragment,
                 RestaurantUtils.getQRBundle(QRcode)
         );
-       /* if (QRUtils.checkQRFormat(QRcode))
-        {
-        mViewModel.getRestaurant(QRUtils.getRestaurantIdQR(QRcode)).observe(
-                    this, restaurant -> {
-                if(restaurant==null) {
-                    if(!AppUtils.isNetworkAvailableAndConnected(getContext()))
-                        AppUtils.showSnackbar(getView(),getString(R.string.network_err));
-                   // AppUtils.showSnackbar(getView(),getString(R.string.wrongRest));
-                }
-                else {
-                    SharedPrefUtils.createOrder(getActivity().getApplicationContext(),QRUtils.getTableQR(QRcode),restaurant);
-                    NavHostFragment.findNavController(this).navigate(R.id.foodMenuFragment,
-                            RestaurantUtils.getRestaurantBundle(QRUtils.getRestaurantIdQR(QRcode)));
-                }
-            });
-        }
-        else
-        {
-            AppUtils.showSnackbar(getView(),getString(R.string.wrongQR));
-        }*/
+
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

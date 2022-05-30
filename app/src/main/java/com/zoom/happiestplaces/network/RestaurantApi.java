@@ -2,12 +2,14 @@ package com.zoom.happiestplaces.network;
 
 
 import com.zoom.happiestplaces.model.Customer;
+import com.zoom.happiestplaces.model.Issue;
 import com.zoom.happiestplaces.model.MenuItem;
 import com.zoom.happiestplaces.model.Order;
 import com.zoom.happiestplaces.model.RateData;
 import com.zoom.happiestplaces.model.Restaurant;
 import com.zoom.happiestplaces.model.RestaurantReview;
 import com.zoom.happiestplaces.model.ReviewData;
+import com.zoom.happiestplaces.model.Topic;
 import com.zoom.happiestplaces.model.response.OrderResponse;
 import com.zoom.happiestplaces.model.response.ReviewDataResponse;
 
@@ -44,6 +46,10 @@ public interface RestaurantApi {
     Call<OrderResponse> getOrder(@Path("orderId") UUID orderId);
 
     @Headers("AUTHORIZATION: AUcufHNW2LKaP9c9uQT8krSMCwfrzA")
+    @GET("customer/order/{custId}")
+    Call<List<OrderResponse>> getOrdersCustomer(@Path("custId") UUID custId);
+
+    @Headers("AUTHORIZATION: AUcufHNW2LKaP9c9uQT8krSMCwfrzA")
     @GET("restaurant/{restId}")
     Call<Restaurant> getRestaurant(@Path("restId") UUID restId);
 
@@ -64,4 +70,12 @@ public interface RestaurantApi {
     @Headers("AUTHORIZATION: AUcufHNW2LKaP9c9uQT8krSMCwfrzA")
     @GET("comments/restaurant/{restaurant_id}/")
     Call<List<ReviewDataResponse>> getRestaurantComments(@Path("restaurant_id") UUID restaurant_id);
+
+    @Headers("AUTHORIZATION: AUcufHNW2LKaP9c9uQT8krSMCwfrzA")
+    @GET("report/customer/")
+    Call<Topic> getTopics();
+
+    @Headers("AUTHORIZATION: AUcufHNW2LKaP9c9uQT8krSMCwfrzA")
+    @POST("report/customer/")
+    Call<Issue> sendIssue(@Body Issue issue);
 }

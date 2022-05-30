@@ -17,6 +17,7 @@ public class Restaurant implements Serializable {
     @SerializedName("dish_set")
     List<MenuItem> menuList;
     Ratings ratings;
+    Double points_rate;
 
     public Restaurant(UUID id, String phoneNum, String name,
                       float num_of_stars, int total_reviews) {
@@ -25,6 +26,10 @@ public class Restaurant implements Serializable {
         this.name = name;
         this.num_of_stars = num_of_stars;
         this.total_reviews = total_reviews;
+    }
+
+    public Double getPoints_rate() {
+        return points_rate;
     }
 
     public Ratings getRatings() {

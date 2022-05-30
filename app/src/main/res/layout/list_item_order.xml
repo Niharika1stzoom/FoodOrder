@@ -31,7 +31,7 @@
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Paneer Tikkagghfhghghghghhghghghhfghfghfghfgfghffgfgfg" />
+                tools:text="Paneer Tikka" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_qty"

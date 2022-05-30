@@ -23,18 +23,20 @@
             android:layout_centerInParent="true"
             android:contentDescription="@string/scan_msg"
             android:background="@drawable/background_image"/>
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/view_order_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primaryColor"
-            android:textColor="@color/primaryTextColor"
-            android:padding="4dp"
-            android:textSize="20dp"
             android:layout_alignParentBottom="true"
-            android:textAlignment="center"
+            android:background="@color/primaryColor"
+            android:hint="@string/app_name"
+            android:clickable="true"
+            android:padding="4dp"
             android:text="@string/scan_msg"
-            android:clickable="true"/>
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="20dp" />
 
     </RelativeLayout>
 

@@ -15,6 +15,7 @@ import com.zoom.happiestplaces.util.CustomerUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+import java.util.List;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -111,10 +112,31 @@ public class OrderRepository {
                     liveData.postValue(response.body());
                 } else {
                     liveData.postValue(null);
+
                 }
             }
             @Override
             public void onFailure(@NonNull Call<OrderResponse> call, @NonNull Throwable t) {
+                Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
+                liveData.postValue(null);
+            }
+        });
+    }
+
+    public void getOrdersCustomer(UUID id, MutableLiveData<List<OrderResponse>> liveData) {
+        Call<List<OrderResponse>> call = mApiInterface.getOrdersCustomer(id);
+        call.enqueue(new Callback<List<OrderResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<OrderResponse>> call,
+                                   @NonNull Response<List<OrderResponse>> response) {
+                if (response.isSuccessful()) {
+                    liveData.postValue(response.body());
+                } else {
+                    liveData.postValue(null);
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<List<OrderResponse>> call, @NonNull Throwable t) {
                 Log.d(AppConstants.TAG,"Failure"+t.getLocalizedMessage());
                 liveData.postValue(null);
             }

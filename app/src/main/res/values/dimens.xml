@@ -86,5 +86,7 @@
     <dimen name="constraint_height">60dp</dimen>
     <dimen name="button_round_radius">5</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="slider_img_size">300dp</dimen>
+    <dimen name="xlarge">40dp</dimen>
 
 </resources>

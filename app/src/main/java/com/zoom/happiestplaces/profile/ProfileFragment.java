@@ -42,15 +42,21 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = ProfileFragmentBinding.inflate(inflater, container, false);
         View view = mBinding.getRoot();
-        updateUI();
-        addClickListener();
+        mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        Customer customer=mViewModel.getCustomer();
+        if(customer==null) {
+            NavHostFragment.findNavController(getParentFragment()).navigate(R.id.scanFragment);
+        }else {
+            updateUI();
+            addClickListener();
+        }
         return view;
     }
 
@@ -145,7 +151,8 @@ public class ProfileFragment extends Fragment {
 
     private void updateUI() {
         Customer customer=mViewModel.getCustomer();
-
+        if(customer==null)
+            NavHostFragment.findNavController(getParentFragment()).navigate(R.id.scanFragment);
         if(!TextUtils.isEmpty(customer.getName()))
         mBinding.itemTitle.setText(customer.getName().toUpperCase());
         if(!TextUtils.isEmpty(customer.getEmailId()))

@@ -11,11 +11,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.model.Order;
 import com.zoom.happiestplaces.model.response.OrderResponse;
 import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
+import com.zoom.happiestplaces.util.CustomerUtils;
 import com.zoom.happiestplaces.util.NotificationUtils;
 import com.zoom.happiestplaces.util.OrderUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
@@ -48,7 +50,7 @@ public class OrderViewModel extends AndroidViewModel{
         mOrderLiveData=new MutableLiveData<>();
     }
 
-
+    //Adds customer to order
     public LiveData<OrderResponse> placeOrder() {
         addCustomerToOrder();
         orderRepository.placeOrder(mOrderLiveData,
@@ -118,6 +120,233 @@ public class OrderViewModel extends AndroidViewModel{
         return orderRepository.getCustomer(mContext);
     }
     public void delCustomer() {
+        CustomerUtils.setFirebaseCrashylyticsDetails(mContext,"");
         orderRepository.delCustomer(mContext);
     }
+
+    public Double getRedeemRs() {
+        Double points=getCustomer().getCurrent_pts();
+        Double redeem=points
+                *getCurrentOrder().getRestaurant().getPoints_rate();
+            Log.d(AppConstants.TAG,"Resto "+getCurrentOrder().getRestaurant().getPoints_rate());
+        if(redeem>getTotal()) {
+            redeem = getTotal();
+        }
+
+        if(redeem==getTotal())
+    {
+        //TODO:to be handled
+    }
+        Log.d(AppConstants.TAG,"Reedeem "+redeem);
+       return redeem;
+
+    }
+    public Double getRedeemPointsOrder() {
+        Double points=getCustomer().getCurrent_pts();
+        Double redeem=points
+                *getCurrentOrder().getRestaurant().getPoints_rate();
+        if(redeem>=getTotal()) {
+            redeem = getTotal();
+            return redeem/getCurrentOrder().getRestaurant().getPoints_rate();
+         }
+        if(redeem==getTotal())
+        {
+            //TODO:to be handled
+        }
+       return points;
+
+    }
+
+    public Double getRemainingPoints() {
+        Double remaining=getCustomer().getCurrent_pts()-getRedeemPointsOrder();
+        Log.d(AppConstants.TAG,"Remaining "+remaining);
+        return remaining;
+
+       // return getCustomer().getCurrent_pts()-(getRedeemPoints()/ getCurrentOrder().getRestaurant().getPoints_rate());
+    }
+
+    public void setRedeemPointsOrder() {
+        SharedPrefUtils.addRedeemPoints(mContext,getRedeemPointsOrder());
+        //getCurrentOrder().setRedeem_points(getRedeemPointsOrder());
+        Log.d(AppConstants.TAG,"Redeem points for this order"+getRedeemPointsOrder());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "508569630420",
+    "project_id": "restaurant-solutions",
+    "storage_bucket": "restaurant-solutions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508569630420:android:f63a0ae460b04dfe1eed41",
+        "android_client_info": {
+          "package_name": "com.zoom.happiestplaces"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508569630420-0t5mf0vo7j1gquv47pvlk8j01gsbvdid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH7Rofp8P123VyseqTNHcDiYT61n0Do20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508569630420-0t5mf0vo7j1gquv47pvlk8j01gsbvdid.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

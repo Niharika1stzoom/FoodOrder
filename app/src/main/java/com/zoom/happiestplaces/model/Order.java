@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 //Used to create order in app
@@ -20,7 +19,8 @@ public class Order implements Serializable {
     boolean status;
     private Boolean orderExecuted=false;
     private Customer customerObj;
-    int redeem_points;
+    @SerializedName("redeem_pts")
+    Double redeem_points;
     private Restaurant restaurant;
     @SerializedName("orders")
     public List<OrderMenuItem> foodItemsList;
@@ -30,6 +30,10 @@ public class Order implements Serializable {
         this.restaurant = restaurant;
         foodItemsList=new ArrayList<>();
         this.table=table;
+    }
+
+    public void setRedeem_points(Double redeem_points) {
+        this.redeem_points = redeem_points;
     }
 
     public UUID getCustomerId() {
@@ -56,7 +60,7 @@ public class Order implements Serializable {
         this.customerObj = customer;
     }
 
-    public int getRedeem_points() {
+    public Double getRedeem_points() {
         return redeem_points;
     }
 

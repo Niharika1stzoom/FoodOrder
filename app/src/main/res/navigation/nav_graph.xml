@@ -40,5 +40,20 @@
         android:name="com.zoom.happiestplaces.profile.ProfileFragment"
         android:label="@string/profileFragment"
         tools:layout="@layout/profile_fragment" />
+    <fragment
+        android:id="@+id/customerOrdersFragment"
+        android:name="com.zoom.happiestplaces.order.customerOrders.CustomerOrdersFragment"
+        android:label="@string/ordersFragment_"
+        tools:layout="@layout/customer_orders_fragment" />
+    <fragment
+        android:id="@+id/issueReportFragment"
+        android:name="com.zoom.happiestplaces.issue.IssueReportFragment"
+        android:label="@string/issueFragment"
+        tools:layout="@layout/issue_report_fragment" />
+    <fragment
+        android:id="@+id/introViewPagerFragment"
+        android:name="com.zoom.happiestplaces.intro.IntroViewPagerFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_intro_view_pager" />
 
 </navigation>

@@ -62,9 +62,10 @@ public class DisplayReviewAdapter extends RecyclerView.Adapter<DisplayReviewAdap
                 if (review.getCustomer().getName() != null ||
                         !TextUtils.isEmpty(review.getCustomer().getName()))
                     mBinding.itemTitle.setText(review.getCustomer().getName());
-                if (review.getCustomer().getPhotoURL() != null)
+               // if (review.getCustomer().getPhotoURL() != null)
                     AppUtils.setImage(mContext, review.getCustomer().getPhotoURL(),
                             mBinding.itemProfileImg);
+
             }
                 if(review.getRating()!=null) {
                     mBinding.ratingBarReview.setRating(review.getRating());

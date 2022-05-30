@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class RestaurantUtils {
     public static final String ARG_RESTAURANT = "restaurant";
-    public static final String ARG_RESTAURANT_ID = "restaurant_id";
+    public static final String ARG_RESTAURANT_ID = "restaurantId";
     public static String ARG_QRCode_ID="qr_code";
 
 

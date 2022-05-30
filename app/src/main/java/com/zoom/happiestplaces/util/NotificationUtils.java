@@ -35,6 +35,7 @@ public class NotificationUtils {
      * This pending intent id is used to uniquely reference the pending intent
      */
     private static final int REVIEW_REMINDER_PENDING_INTENT_ID = 3417;
+
     /**
      * This notification channel id is used to link notifications to this channel
      */
@@ -51,7 +52,7 @@ public class NotificationUtils {
     }
 
     public static void remindUserReview(Context context, UUID orderId, UUID restID,String restaurant) {
-        Log.d(AppConstants.TAG,"In remind user ");
+        Log.d(AppConstants.TAG,"In Notification"+restaurant);
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -65,7 +66,7 @@ public class NotificationUtils {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context,REVIEW_REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.primaryColor))
-                .setSmallIcon(R.mipmap.ic_launcher_happiest)
+                .setSmallIcon(R.drawable.ic_notification_icon)
                 .setLargeIcon(largeIcon(context))
                         .setGroup(GROUP_KEY_REVIEW_NOTIFICATION)
                 .setContentTitle(new String(Character.toChars(unicode))+" "+context.getString(R.string.notification_content_title))
@@ -82,7 +83,81 @@ public class NotificationUtils {
         Log.d(AppConstants.TAG,"Notification sent ");
     }
 
+    public static void orderStatusChangeNotification(Context context,String status,String restaurant,String tablenum) {
+        Log.d(AppConstants.TAG,"In Notification"+restaurant);
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    REVIEW_REMINDER_NOTIFICATION_CHANNEL_ID,
+                    context.getString(R.string.main_notification_channel_name),
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        String title,text;
+        if(status.equals(AppConstants.Status.Delivered.toString()))
+        {
+             title=restaurant+" "+context.getString(R.string.notification_title_delivered)
+                    +new String(Character.toChars(AppConstants.TASTY_UNICODE));
+             text="Table: "+tablenum+" "+context.getString(R.string.delivery_text);
+        }
+        else
+        if(status.equals(AppConstants.Status.Preparing.toString()))
+        {
+            title=restaurant+" "+context.getString(R.string.notification_title_preparing)
+                    +new String(Character.toChars(AppConstants.PREPARING_UNICODE));
+            text="Table: "+tablenum+" "+context.getString(R.string.preparing_text);
+        }
+        else
+        if(status.equals(AppConstants.Status.Ready.toString()))
+        {
+            title=restaurant+" "+context.getString(R.string.notification_title_ready)
+                    +new String(Character.toChars(AppConstants.READY_UNICODE));
+            text="Table: "+tablenum+" "+context.getString(R.string.ready_text);
+        }
+        else
+        {
+             title=restaurant+" "+context.getString(R.string.notification_title_cancelled)
+                    +new String(Character.toChars(AppConstants.SAD_UNICODE));
+             text="Table: "+tablenum+ context.getString(R.string.cancelled_text);
 
+        }
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(context,REVIEW_REMINDER_NOTIFICATION_CHANNEL_ID)
+                        .setColor(ContextCompat.getColor(context, R.color.primaryColor))
+                        .setSmallIcon(R.drawable.ic_notification_icon)
+                        .setLargeIcon(largeIcon(context))
+                        .setGroup(GROUP_KEY_REVIEW_NOTIFICATION)
+                        .setContentTitle(title)
+                        .setContentText(text)
+                        .setDefaults(Notification.DEFAULT_VIBRATE).
+                        setContentIntent(contentIntentOrders(context))
+                        .setAutoCancel(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+        notificationManager.notify(new Random().nextInt() , notificationBuilder.build());
+        Log.d(AppConstants.TAG,"Notification sent ");
+    }
+
+    private static PendingIntent contentIntentOrders(Context context) {
+        PendingIntent startActivityIntent = new NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.customerOrdersFragment)
+                .createPendingIntent();
+        return startActivityIntent;
+    }
+    private static PendingIntent contentIntentReferral(Context context) {
+        PendingIntent startActivityIntent = new NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.profileFragment)
+
+                .createPendingIntent();
+        return startActivityIntent;
+
+    }
     private static PendingIntent contentIntent(Context context, UUID orderId,UUID restId) {
         //Intent startActivityIntent = new Intent(context, MainActivity.class);
         PendingIntent startActivityIntent = new NavDeepLinkBuilder(context)
@@ -107,4 +182,38 @@ public class NotificationUtils {
         Bitmap largeIcon = BitmapFactory.decodeResource(res,R.mipmap.ic_launcher_happiest);
         return largeIcon;
     }
+
+    public static void sendNotification(String title, String body,Context context) {
+
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    REVIEW_REMINDER_NOTIFICATION_CHANNEL_ID,
+                    context.getString(R.string.main_notification_channel_name),
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(context,REVIEW_REMINDER_NOTIFICATION_CHANNEL_ID)
+                        .setColor(ContextCompat.getColor(context, R.color.primaryColor))
+                        .setSmallIcon(R.drawable.ic_notification_icon)
+                        .setLargeIcon(largeIcon(context))
+                        .setGroup(GROUP_KEY_REVIEW_NOTIFICATION)
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setDefaults(Notification.DEFAULT_VIBRATE).
+                        setContentIntent(contentIntentReferral(context))
+                        .setAutoCancel(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+        notificationManager.notify(new Random().nextInt() , notificationBuilder.build());
+        Log.d(AppConstants.TAG,"Notification sent ");
+    }
+
+
 }

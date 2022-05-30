@@ -1,6 +1,7 @@
 package com.zoom.happiestplaces.order;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -22,7 +23,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.zoom.happiestplaces.R;
 import com.zoom.happiestplaces.databinding.OrderFragmentBinding;
 import com.zoom.happiestplaces.model.Customer;
@@ -43,6 +50,7 @@ import com.zoom.happiestplaces.util.SignInUtils;
 import java.util.UUID;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 @AndroidEntryPoint
 public class OrderFragment extends Fragment {
@@ -52,9 +60,11 @@ public class OrderFragment extends Fragment {
     private ActivityResultLauncher<Intent> mStartForResult;
     private GoogleSignInClient mGoogleSignInClient;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //if mOrderId is there observe flow otherwise normal flow use OrderResponse ow use Order
         mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -70,13 +80,15 @@ public class OrderFragment extends Fragment {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
         updateUI(account);
     }
+
     private void updateUI(GoogleSignInAccount account) {
         //check whether viewmodel is created
         if(account!=null && mViewModel.getCustomer()!=null)
         {
-            mBinding.signInButton.setVisibility(View.GONE);
+           // mBinding.signInButton.setVisibility(View.GONE);
             getRedeemPoints();
-            //setRedeemPoints(SharedPrefUtils.getCustomer(getContext()).getCurrent_pts());
+            //TODO:if using redeem check
+            mBinding.signInGroup.setVisibility(View.GONE);
         }
         else
         {
@@ -86,27 +98,43 @@ public class OrderFragment extends Fragment {
             }
         }
     }
+
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = OrderFragmentBinding.inflate(inflater, container, false);
         View view = mBinding.getRoot();
         mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
+        //Here check whether mOrderId exist if so observe and else check the other part
         //If there is no order and order executed is false then handle the back
         if (SharedPrefUtils.checkOrderIsEmpty(getActivity().getApplicationContext())
                 && !mViewModel.isOrderTrue()) {
             NavHostFragment.findNavController(getParentFragment()).navigate(R.id.foodMenuFragment);
         }
         initOrderView();
+
         //TODO:if account is null
         initSignIn();
         return view;
     }
     void setRedeemPoints(Double points)
     {
-        mBinding.redeemLabelWelcome.setVisibility(View.GONE);
-        mBinding.redeemLabel.setText("Yay! You have "+points+ " rewards points");
+
+       // mBinding.signinLabel.setText("Yay! You have "+points+ " rewards points");
+       //TODO:Below if using checkbox
+
+        mBinding.redeemGroup.setVisibility(View.VISIBLE);
+       if(points<=0)
+           mBinding.rewardCheckbox.setEnabled(false);
+         mBinding.rewardCheckbox.setText(getString(R.string.reward_pts)+points);
+        mBinding.ptsBalance.setText(getString(R.string.available)+points);
+
+
     }
+
+
 
     private void getRedeemPoints() {
         mViewModel.getRedeemPoints(mViewModel.getCustomer()).observe(getViewLifecycleOwner(), customer -> {
@@ -122,10 +150,12 @@ public class OrderFragment extends Fragment {
     }
 
     private void initSignIn() {
+        Log.d(AppConstants.TAG,"in sign in");
         GoogleSignInOptions gso= SignInUtils.getSignInOptions();
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         mBinding.signInButton.setSize(SignInButton.SIZE_WIDE);
         mBinding.signInButton.setOnClickListener(view -> {
+            Log.d(AppConstants.TAG,"Clicked sign in");
             Intent intent = mGoogleSignInClient.getSignInIntent();
             mStartForResult.launch(intent);
         });
@@ -133,9 +163,10 @@ public class OrderFragment extends Fragment {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            mViewModel.addCustomer(CustomerUtils.getCustomerAccount(account)).observe(getViewLifecycleOwner(), customer -> {
+            Customer cust=CustomerUtils.getCustomerAccount(account,getActivity().getApplicationContext());
+            Log.d(AppConstants.TAG,"NEW Customer is "+cust.getFcmToken()+" Address "+cust.getReferralId());
+            mViewModel.addCustomer(CustomerUtils.getCustomerAccount(account,getActivity().getApplicationContext())).observe(getViewLifecycleOwner(), customer -> {
                 if(customer==null) {
-                    Log.d(AppConstants.TAG,"Customer is null");
                     AppUtils.showSnackbar(getView(),getString(R.string.sign_in_err));
                     logOut();
                 }
@@ -159,6 +190,7 @@ public class OrderFragment extends Fragment {
     }
 
     private void setButtonListeners() {
+
         if (mViewModel.isOrderTrue()) {
             showExecutedOrderView();
         }
@@ -188,24 +220,27 @@ public class OrderFragment extends Fragment {
                     .setNegativeButton(R.string.no, null)
                     .setPositiveButton(R.string.place_order, (dialog, which) -> {
                         mBinding.buttonsGroup.setVisibility(View.INVISIBLE);
+                        if(mBinding.rewardCheckbox.isChecked())
+                        {
+                            mViewModel.setRedeemPointsOrder();
+                        }
                         //when order is placed customer is added
                        mViewModel.placeOrder().observe(getViewLifecycleOwner(), order -> {
-                            if(order==null && !order.getStatus().equals(AppConstants.Status.Placed)) {
+                            if(order==null) {
                                 mBinding.buttonsGroup.setVisibility(View.VISIBLE);
                                 AppUtils.showSnackbar(getView(),getString(R.string.order_fail));
                             }
                             else {
+                                Log.d(AppConstants.TAG,"OrderId "+order.getId());
                                 mBinding.successMsg.setVisibility(View.VISIBLE);
                                 String s="You will earn "+order.getPoints()+" points "+
                                         new String(Character.toChars(AppConstants.PARTY_POPPER_UNICODE));
                                 mBinding.successMsg.
                                         setText(getString(R.string.success_msg)+s);
                                 mViewModel.setOrderExecuted();
-                                setReviewButton(order);
+                                getRedeemPoints();
                                 //Clearing the order in Food menu
                                 //SharedPrefUtils.cancelOrder(getActivity().getApplicationContext());
-                                //TODO:You will earn des many points if u pay order
-                                //setRedeemPoints(order.getCurrent_pts());
                             }
                         });
                     })
@@ -217,24 +252,37 @@ public class OrderFragment extends Fragment {
             alert.getButton(DialogInterface.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK);
         });
-    }
+        mBinding.rewardCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    Double redeem = mViewModel.getRedeemRs();
+                    mBinding.ptsBalance.setText(getString(R.string.remaining) + mViewModel.getRemainingPoints());
+                    showTotal(redeem);
+                    Log.d(AppConstants.TAG,"Redeem points for this order"+mViewModel.getRedeemPointsOrder());
 
-    //Send Review Notification
-    private void setReviewButton(OrderResponse response) {
-        mViewModel.scheduleNotification(response.getId(),
-                   mViewModel.getCurrentOrder().getRestaurant().getId(),
-                    mViewModel.getCurrentOrder().getRestaurant().getName());
+                }
+                else {
+                    mBinding.ptsBalance.setText(getString(R.string.available)
+                            + mViewModel.getCustomer().getCurrent_pts());
+                    showTotal(0.0);
+                }
+            }
+        });
+    }
+    private void showTotal(Double redeemRs) {
+
+        Double total = mViewModel.getTotal() - redeemRs;
+        mBinding.grandTotalValue.setText(String.format("%.2f",total));
     }
 
     private void showExecutedOrderView() {
         mBinding.buttonsGroup.setVisibility(View.INVISIBLE);
         mBinding.successMsg.setVisibility(View.VISIBLE);
+        mBinding.rewardCheckbox.setEnabled(false);
     }
 
-    private void showTotal() {
-        Double total = mViewModel.getTotal();
-        mBinding.grandTotalValue.setText(total.toString());
-    }
+
 
     private void setTitle() {
        if(mViewModel.getCurrentOrder().getRestaurant()!=null)
@@ -265,6 +313,6 @@ public class OrderFragment extends Fragment {
         mAdapter = new OrderAdapter(getContext());
         mBinding.recyclerView.setAdapter(mAdapter);
         mAdapter.setList(SharedPrefUtils.getOrder(getActivity().getApplicationContext()).getItemsList());
-        showTotal();
+        showTotal(0.0);
     }
 }

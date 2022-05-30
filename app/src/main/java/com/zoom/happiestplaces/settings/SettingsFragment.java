@@ -2,6 +2,7 @@ package com.zoom.happiestplaces.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +22,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.zoom.happiestplaces.R;
+import com.zoom.happiestplaces.model.Customer;
 import com.zoom.happiestplaces.order.OrderViewModel;
 import com.zoom.happiestplaces.util.AppConstants;
 import com.zoom.happiestplaces.util.AppUtils;
 import com.zoom.happiestplaces.util.CustomerUtils;
+import com.zoom.happiestplaces.util.InviteUtils;
 import com.zoom.happiestplaces.util.SharedPrefUtils;
 import com.zoom.happiestplaces.util.SignInUtils;
 
@@ -56,6 +63,45 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             signIn();
             return true;
         });
+        findPreference(getString(R.string.ordersSetting)).setOnPreferenceClickListener(preference -> {
+            NavHostFragment.findNavController(this).navigate(R.id.customerOrdersFragment);
+            return true;
+        });
+        findPreference(getString(R.string.inviteEarnPreference))
+                .setOnPreferenceClickListener(preference -> {
+            shareReferLink();
+            return true;
+        });
+        findPreference(getString(R.string.feedbackPreference)).setOnPreferenceClickListener(preference -> {
+            NavHostFragment.findNavController(this).navigate(R.id.issueReportFragment);
+            return true;
+        });
+    }
+
+    private void shareReferLink() {
+        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLongLink(Uri.parse(
+                        InviteUtils.getShareLink(getActivity().getApplicationContext())))  // manually
+                .buildShortDynamicLink()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            // share app dialog
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_TEXT, InviteUtils.getShareText()+ shortLink.toString());
+                            intent.setType("text/plain");
+                            startActivity(Intent.createChooser(intent, "Share"));
+
+                        } else {
+                            Log.e(AppConstants.TAG, "Sharing error"+task.getException() );
+                        }
+                    }
+                });
+
     }
 
     private void signIn() {
@@ -67,7 +113,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            mViewModel.addCustomer(CustomerUtils.getCustomerAccount(account)).observe(getViewLifecycleOwner(), customer -> {
+            Customer cust=CustomerUtils.getCustomerAccount(account,getActivity().getApplicationContext());
+            mViewModel.addCustomer(CustomerUtils.getCustomerAccount(account,getActivity().getApplicationContext())).observe(getViewLifecycleOwner(), customer -> {
                 //TODO:check this line
                 if(customer==null) {
                     AppUtils.showSnackbar(getView(),getString(R.string.sign_in_err));
@@ -77,14 +124,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     mViewModel.saveCustomer(customer);
                     AppUtils.showSnackbar(getView(),getString(R.string.sign_in)+customer.getEmailId());
                     checkSignIn();
-                    //NavHostFragment.findNavController(this).navigate(R.id.foodMenuFragment);
                 }
             });
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.d(AppConstants.TAG, "signInResult:failed code=" + e.getStatusCode());
-            //updateUI(null);
+
         }
     }
     private void logOut() {
@@ -98,13 +142,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if(SharedPrefUtils.getCustomer(getActivity().getApplicationContext())==null) {
             findPreference(getString(R.string.profile)).setVisible(false);
             findPreference(getString(R.string.sign_in_settings)).setVisible(true);
+            findPreference(getString(R.string.ordersSetting)).setVisible(false);
         }
         else {
             findPreference(getString(R.string.profile)).setVisible(true);
             findPreference(getString(R.string.sign_in_settings)).setVisible(false);
-
+            findPreference(getString(R.string.ordersSetting)).setVisible(true);
+        }
         }
     }
-
-
-}

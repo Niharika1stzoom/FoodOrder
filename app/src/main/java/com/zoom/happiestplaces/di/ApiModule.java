@@ -3,6 +3,7 @@ package com.zoom.happiestplaces.di;
 import com.zoom.happiestplaces.foodmenu.FoodMenuRepository;
 import com.zoom.happiestplaces.network.RestaurantApi;
 import com.zoom.happiestplaces.order.OrderRepository;
+import com.zoom.happiestplaces.repository.IssueRepository;
 import com.zoom.happiestplaces.review.ReviewRepository;
 import com.zoom.happiestplaces.review.ReviewSingleton;
 
@@ -18,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 @InstallIn(SingletonComponent.class)
 public class ApiModule {
-    String baseURL = "  https://restaurants.happiestplaces.com/api/";
+    String baseURL = "https://restaurants.happiestplaces.com/api/";
     //String baseURL="http://20.106.72.196/api/";
     @Singleton
     @Provides
@@ -51,5 +52,9 @@ public class ApiModule {
     @Provides
     ReviewRepository provideRepository(RestaurantApi apiInterface,ReviewSingleton reviewSingleton){
         return new ReviewRepository(apiInterface,reviewSingleton);
+    }
+    @Provides
+    IssueRepository provideIssueRepository(RestaurantApi apiInterface){
+        return new IssueRepository(apiInterface);
     }
 }

@@ -2,7 +2,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        app:isPreferenceVisible="false"
             app:key="@string/ordersSetting"
             app:title="@string/ordersSetting"
             app:icon="@drawable/ic_action_order"
@@ -22,20 +21,21 @@
         app:summary="@string/signInSummary"/>
 
     <Preference
-        app:isPreferenceVisible="false"
+        app:isPreferenceVisible="true"
         app:key="@string/inviteEarnPreference"
         app:title="@string/inviteEarnPreference"
         app:icon="@drawable/ic_action_invite"
         app:summary="@string/inviteSummary"/>
 
     <Preference
-        app:isPreferenceVisible="false"
-        app:key="@string/help"
-        app:title="@string/help"
-        app:icon="@drawable/ic_action_help"
-        app:summary="@string/inviteSummary"/>
+        app:isPreferenceVisible="true"
+        app:key="@string/feedbackPreference"
+        app:title="@string/feedbackPreference"
+        app:icon="@drawable/ic_action_feedback"
+        app:summary="@string/feedbackSummary"/>
 
     <SwitchPreferenceCompat
+        app:isPreferenceVisible="false"
             app:key="@string/notification"
             app:title="@string/notification"
         app:icon="@drawable/ic_action_notification" />

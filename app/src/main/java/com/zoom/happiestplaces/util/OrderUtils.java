@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class OrderUtils {
     public static final String ARG_ORDER = "order" ;
-    public static final String ARG_ORDER_ID = "order_id";
+    public static final String ARG_ORDER_ID = "orderId";
 
 
     public  static Bundle getOrderBundle(Order order){

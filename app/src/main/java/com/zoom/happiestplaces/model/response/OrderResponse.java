@@ -31,7 +31,6 @@ public class OrderResponse {
         for(OrderDishResponse orderDish:orderDishResponses)
             menuItems.add(orderDish.getMenuItem());
         return menuItems;
-
     }
 
     public double getCurrent_pts() {

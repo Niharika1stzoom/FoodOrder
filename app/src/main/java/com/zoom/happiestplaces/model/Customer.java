@@ -17,16 +17,33 @@ public class Customer {
     String photoURL;
     String phone;
     Address address;
+    String fcmToken;
+    @SerializedName("redeem")
+    UUID referralId;
 
-    public Customer(String name, String emailId, String credentials,String photoURL) {
+    public UUID getReferralId() {
+        return referralId;
+    }
+
+    public void setReferralId(UUID referralId) {
+        this.referralId = referralId;
+    }
+
+    public Customer(String name, String emailId, String credentials, String photoURL, String token, UUID referral) {
         this.name = name;
         this.emailId = emailId;
         this.credentials = credentials;
         this.photoURL=photoURL;
+        this.fcmToken=token;
+        this.referralId=referral;
     }
 
-    public Customer(String emailId) {
-        this.emailId=emailId;
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getPhone() {

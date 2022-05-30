@@ -25,4 +25,39 @@
     <color name="item_color_shadow">#c9f2f3</color>
 
 
+    <color name="dot_dark_screen1">#C2185B</color>
+    <color name="dot_dark_screen2">#430d64</color>
+    <color name="dot_dark_screen3">#00695C</color>
+    <color name="dot_dark_screen4">#ef6c00</color>
+    <color name="dot_dark_screen5">#3E2723</color>
+
+    <color name="dot_light_screen1">#F8BBD0</color>
+    <color name="dot_light_screen2">#E1BEE7</color>
+    <color name="dot_light_screen3">#80CBC4</color>
+    <color name="dot_light_screen4">#FFE0B2</color>
+    <color name="dot_light_screen5">#A1887F</color>
+
+
+    <array name="dot_active">
+        <item>@color/primaryDarkColor</item>
+        <item>@color/primaryDarkColor</item>
+        <item>@color/primaryDarkColor</item>
+        <item>@color/dot_light_screen4</item>
+        <item>@color/dot_light_screen5</item>
+    </array>
+
+    <array name="dot_inactive">
+        <item>@color/primaryTextColor</item>
+        <item>@color/primaryTextColor</item>
+        <item>@color/primaryTextColor</item>
+        <item>@color/dot_dark_screen4</item>
+        <item>@color/dot_dark_screen5</item>
+    </array>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+
 </resources>
